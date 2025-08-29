@@ -1,1224 +1,1271 @@
-+<!DOCTYPE html>
-+<html lang="en">
-+<head>
-+    <meta charset="UTF-8">
-+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+    <title>CBAM Expert Platform</title>
-+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-+    <style>
-+        * {
-+            margin: 0;
-+            padding: 0;
-+            box-sizing: border-box;
-+        }
-+
-+        body {
-+            font-family: 'Poppins', sans-serif;
-+            background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
-+            color: #1a1a1a;
-+            line-height: 1.6;
-+            overflow-x: hidden;
-+        }
-+
-+        .header {
-+            background: rgba(255, 255, 255, 0.95);
-+            backdrop-filter: blur(20px);
-+            border-bottom: 1px solid rgba(6, 4, 150, 0.1);
-+            padding: 1.5rem 3rem;
-+            display: flex;
-+            justify-content: space-between;
-+            align-items: center;
-+            position: sticky;
-+            top: 0;
-+            z-index: 1000;
-+            box-shadow: 0 8px 32px rgba(6, 4, 150, 0.05);
-+        }
-+
-+        .logo {
-+            font-size: 1.8rem;
-+            font-weight: 700;
-+            background: linear-gradient(135deg, #060496, #4040c8);
-+            -webkit-background-clip: text;
-+            -webkit-text-fill-color: transparent;
-+            background-clip: text;
-+        }
-+
-+        .nav-controls {
-+            display: flex;
-+            gap: 2rem;
-+            align-items: center;
-+        }
-+
-+        .market-indicator {
-+            display: flex;
-+            align-items: center;
-+            gap: 1rem;
-+            padding: 0.5rem 1.5rem;
-+            background: rgba(6, 4, 150, 0.05);
-+            border-radius: 25px;
-+            font-size: 0.9rem;
-+            font-weight: 500;
-+        }
-+
-+        .live-dot {
-+            width: 8px;
-+            height: 8px;
-+            background: #22c55e;
-+            border-radius: 50%;
-+            animation: pulse 2s infinite;
-+        }
-+
-+        @keyframes pulse {
-+            0%, 100% { opacity: 1; }
-+            50% { opacity: 0.5; }
-+        }
-+
-+        .lang-toggle {
-+            display: flex;
-+            background: rgba(6, 4, 150, 0.05);
-+            border-radius: 20px;
-+            padding: 4px;
-+        }
-+
-+        .lang-btn {
-+            padding: 8px 16px;
-+            border: none;
-+            background: transparent;
-+            color: #666;
-+            border-radius: 16px;
-+            cursor: pointer;
-+            font-family: 'Poppins', sans-serif;
-+            font-size: 14px;
-+            font-weight: 500;
-+            transition: all 0.3s ease;
-+        }
-+
-+        .lang-btn.active {
-+            background: #060496;
-+            color: white;
-+            box-shadow: 0 4px 12px rgba(6, 4, 150, 0.3);
-+        }
-+
-+        .back-button {
-+            background: rgba(6, 4, 150, 0.1);
-+            color: #060496;
-+            border: 1px solid rgba(6, 4, 150, 0.2);
-+            padding: 8px 16px;
-+            border-radius: 20px;
-+            cursor: pointer;
-+            font-family: 'Poppins', sans-serif;
-+            font-size: 14px;
-+            font-weight: 500;
-+            transition: all 0.3s ease;
-+            display: none;
-+        }
-+
-+        .back-button:hover {
-+            background: rgba(6, 4, 150, 0.15);
-+        }
-+
-+        .container {
-+            max-width: 1400px;
-+            margin: 0 auto;
-+            padding: 3rem;
-+            min-height: calc(100vh - 120px);
-+        }
-+
-+        /* Main Dashboard */
-+        .dashboard {
-+            display: block;
-+        }
-+
-+        .hero-section {
-+            text-align: center;
-+            margin-bottom: 4rem;
-+            padding: 2rem 0;
-+        }
-+
-+        .hero-title {
-+            font-size: 2.8rem;
-+            font-weight: 700;
-+            background: linear-gradient(135deg, #060496, #4040c8);
-+            -webkit-background-clip: text;
-+            -webkit-text-fill-color: transparent;
-+            background-clip: text;
-+            margin-bottom: 1rem;
-+        }
-+
-+        .hero-subtitle {
-+            font-size: 1.3rem;
-+            color: #666;
-+            font-weight: 400;
-+            max-width: 700px;
-+            margin: 0 auto;
-+        }
-+
-+        .sections-grid {
-+            display: grid;
-+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-+            gap: 2rem;
-+            max-width: 1200px;
-+            margin: 0 auto;
-+        }
-+
-+        .section-card {
-+            background: rgba(255, 255, 255, 0.8);
-+            backdrop-filter: blur(20px);
-+            border-radius: 24px;
-+            padding: 3rem 2.5rem;
-+            text-align: center;
-+            cursor: pointer;
-+            transition: all 0.4s ease;
-+            border: 1px solid rgba(6, 4, 150, 0.08);
-+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
-+        }
-+
-+        .section-card:hover {
-+            transform: translateY(-8px);
-+            box-shadow: 0 30px 80px rgba(6, 4, 150, 0.15);
-+            border-color: rgba(6, 4, 150, 0.2);
-+        }
-+
-+        .section-icon {
-+            font-size: 3.5rem;
-+            margin-bottom: 1.5rem;
-+            display: block;
-+            opacity: 0.8;
-+        }
-+
-+        .section-title {
-+            font-size: 1.5rem;
-+            font-weight: 600;
-+            color: #060496;
-+            margin-bottom: 1rem;
-+        }
-+
-+        .section-description {
-+            color: #666;
-+            font-size: 1rem;
-+            line-height: 1.6;
-+            margin-bottom: 1.5rem;
-+        }
-+
-+        .section-features {
-+            list-style: none;
-+            text-align: left;
-+            color: #777;
-+            font-size: 0.9rem;
-+        }
-+
-+        .section-features li {
-+            padding: 0.3rem 0;
-+            position: relative;
-+            padding-left: 1.5rem;
-+        }
-+
-+        .section-features li::before {
-+            content: "✓";
-+            position: absolute;
-+            left: 0;
-+            color: #060496;
-+            font-weight: bold;
-+        }
-+
-+        /* Section Pages */
-+        .section-page {
-+            display: none;
-+        }
-+
-+        .section-header {
-+            text-align: center;
-+            margin-bottom: 3rem;
-+        }
-+
-+        .section-page-title {
-+            font-size: 2.2rem;
-+            font-weight: 600;
-+            color: #060496;
-+            margin-bottom: 1rem;
-+        }
-+
-+        .section-page-subtitle {
-+            font-size: 1.1rem;
-+            color: #666;
-+            max-width: 600px;
-+            margin: 0 auto;
-+        }
-+
-+        /* Informative Section */
-+        .info-grid {
-+            display: grid;
-+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-+            gap: 2rem;
-+            margin-bottom: 3rem;
-+        }
-+
-+        .info-card {
-+            background: rgba(255, 255, 255, 0.9);
-+            border-radius: 16px;
-+            padding: 2rem;
-+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-+            border-left: 4px solid #060496;
-+        }
-+
-+        .info-card h3 {
-+            color: #060496;
-+            font-weight: 600;
-+            margin-bottom: 1rem;
-+            font-size: 1.2rem;
-+        }
-+
-+        .process-step {
-+            background: linear-gradient(135deg, rgba(6, 4, 150, 0.05), rgba(64, 64, 200, 0.05));
-+            border-radius: 12px;
-+            padding: 1.5rem;
-+            margin-bottom: 1.5rem;
-+            border-left: 3px solid #060496;
-+        }
-+
-+        .step-number {
-+            background: #060496;
-+            color: white;
-+            width: 30px;
-+            height: 30px;
-+            border-radius: 50%;
-+            display: inline-flex;
-+            align-items: center;
-+            justify-content: center;
-+            font-weight: 600;
-+            margin-right: 1rem;
-+            font-size: 0.9rem;
-+        }
-+
-+        .step-title {
-+            font-weight: 600;
-+            color: #060496;
-+            margin-bottom: 0.5rem;
-+        }
-+
-+        .step-content {
-+            color: #555;
-+            line-height: 1.6;
-+        }
-+
-+        /* Documents Section */
-+        .documents-grid {
-+            display: grid;
-+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-+            gap: 2rem;
-+            margin-bottom: 3rem;
-+        }
-+
-+        .document-card {
-+            background: rgba(255, 255, 255, 0.9);
-+            border-radius: 16px;
-+            padding: 2rem;
-+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-+            transition: all 0.3s ease;
-+            cursor: pointer;
-+        }
-+
-+        .document-card:hover {
-+            transform: translateY(-4px);
-+            box-shadow: 0 16px 32px rgba(6, 4, 150, 0.1);
-+        }
-+
-+        .document-icon {
-+            font-size: 2rem;
-+            margin-bottom: 1rem;
-+            color: #060496;
-+        }
-+
-+        .document-title {
-+            font-weight: 600;
-+            color: #060496;
-+            margin-bottom: 0.5rem;
-+        }
-+
-+        .document-description {
-+            color: #666;
-+            font-size: 0.9rem;
-+            margin-bottom: 1rem;
-+        }
-+
-+        .download-button {
-+            background: linear-gradient(135deg, #060496, #4040c8);
-+            color: white;
-+            border: none;
-+            padding: 8px 20px;
-+            border-radius: 20px;
-+            font-size: 0.85rem;
-+            cursor: pointer;
-+            transition: all 0.3s ease;
-+        }
-+
-+        .download-button:hover {
-+            transform: translateY(-1px);
-+            box-shadow: 0 4px 12px rgba(6, 4, 150, 0.3);
-+        }
-+
-+        /* Conversation Section */
-+        .conversation-container {
-+            max-width: 900px;
-+            margin: 0 auto;
-+        }
-+
-+        .chat-container {
-+            background: rgba(255, 255, 255, 0.9);
-+            backdrop-filter: blur(20px);
-+            border-radius: 24px;
-+            padding: 2rem;
-+            margin-bottom: 2rem;
-+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
-+            border: 1px solid rgba(6, 4, 150, 0.08);
-+            min-height: 500px;
-+            display: flex;
-+            flex-direction: column;
-+        }
-+
-+        .messages-container {
-+            flex: 1;
-+            overflow-y: auto;
-+            margin-bottom: 2rem;
-+            padding-right: 10px;
-+        }
-+
-+        .message {
-+            margin-bottom: 2rem;
-+            animation: fadeInUp 0.5s ease-out;
-+        }
-+
-+        .message-user {
-+            display: flex;
-+            justify-content: flex-end;
-+        }
-+
-+        .message-user .message-content {
-+            background: linear-gradient(135deg, #060496, #4040c8);
-+            color: white;
-+            padding: 1.2rem 1.8rem;
-+            border-radius: 20px 20px 4px 20px;
-+            max-width: 70%;
-+            font-weight: 500;
-+            box-shadow: 0 8px 24px rgba(6, 4, 150, 0.3);
-+        }
-+
-+        .message-assistant {
-+            display: flex;
-+            justify-content: flex-start;
-+        }
-+
-+        .message-assistant .message-content {
-+            background: rgba(248, 249, 255, 0.8);
-+            border: 1px solid rgba(6, 4, 150, 0.1);
-+            color: #1a1a1a;
-+            padding: 1.5rem 2rem;
-+            border-radius: 20px 20px 20px 4px;
-+            max-width: 85%;
-+            line-height: 1.7;
-+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-+        }
-+
-+        .message-assistant .message-content strong {
-+            color: #060496;
-+        }
-+
-+        .thinking-indicator {
-+            display: none;
-+            align-items: center;
-+            gap: 12px;
-+            padding: 1.5rem 2rem;
-+            background: rgba(248, 249, 255, 0.6);
-+            border-radius: 20px 20px 20px 4px;
-+            margin-bottom: 1rem;
-+            border: 1px solid rgba(6, 4, 150, 0.1);
-+        }
-+
-+        .thinking-dots {
-+            display: flex;
-+            gap: 6px;
-+        }
-+
-+        .thinking-dot {
-+            width: 8px;
-+            height: 8px;
-+            background: #060496;
-+            border-radius: 50%;
-+            animation: thinking 1.4s ease-in-out infinite both;
-+        }
-+
-+        .thinking-dot:nth-child(1) { animation-delay: -0.32s; }
-+        .thinking-dot:nth-child(2) { animation-delay: -0.16s; }
-+
-+        @keyframes thinking {
-+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
-+            40% { transform: scale(1); opacity: 1; }
-+        }
-+
-+        .input-section {
-+            background: rgba(255, 255, 255, 0.9);
-+            backdrop-filter: blur(20px);
-+            border-radius: 24px;
-+            padding: 1.5rem;
-+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
-+            border: 1px solid rgba(6, 4, 150, 0.08);
-+        }
-+
-+        .input-container {
-+            position: relative;
-+            display: flex;
-+            align-items: flex-end;
-+            gap: 1rem;
-+        }
-+
-+        .chat-input {
-+            flex: 1;
-+            border: none;
-+            outline: none;
-+            background: transparent;
-+            font-family: 'Poppins', sans-serif;
-+            font-size: 1.1rem;
-+            padding: 1rem 0;
-+            resize: none;
-+            max-height: 120px;
-+            line-height: 1.5;
-+            color: #1a1a1a;
-+        }
-+
-+        .chat-input::placeholder {
-+            color: #999;
-+            font-weight: 400;
-+        }
-+
-+        .send-button {
-+            background: linear-gradient(135deg, #060496, #4040c8);
-+            border: none;
-+            border-radius: 16px;
-+            padding: 12px 24px;
-+            color: white;
-+            font-weight: 600;
-+            cursor: pointer;
-+            transition: all 0.3s ease;
-+            box-shadow: 0 8px 24px rgba(6, 4, 150, 0.3);
-+            display: flex;
-+            align-items: center;
-+            gap: 8px;
-+        }
-+
-+        .send-button:hover {
-+            transform: translateY(-2px);
-+            box-shadow: 0 12px 32px rgba(6, 4, 150, 0.4);
-+        }
-+
-+        .send-button:disabled {
-+            opacity: 0.6;
-+            cursor: not-allowed;
-+            transform: none;
-+        }
-+
-+        .process-prompts {
-+            display: grid;
-+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-+            gap: 1.5rem;
-+            margin-bottom: 2rem;
-+        }
-+
-+        .process-prompt-card {
-+            background: rgba(255, 255, 255, 0.7);
-+            backdrop-filter: blur(20px);
-+            border: 1px solid rgba(6, 4, 150, 0.08);
-+            border-radius: 16px;
-+            padding: 1.5rem;
-+            cursor: pointer;
-+            transition: all 0.3s ease;
-+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-+        }
-+
-+        .process-prompt-card:hover {
-+            transform: translateY(-4px);
-+            box-shadow: 0 20px 40px rgba(6, 4, 150, 0.15);
-+            border-color: rgba(6, 4, 150, 0.2);
-+        }
-+
-+        .prompt-icon {
-+            font-size: 1.5rem;
-+            margin-bottom: 0.8rem;
-+            display: block;
-+        }
-+
-+        .prompt-title {
-+            font-weight: 600;
-+            color: #060496;
-+            margin-bottom: 0.5rem;
-+            font-size: 1.1rem;
-+        }
-+
-+        .prompt-description {
-+            color: #666;
-+            font-size: 0.95rem;
-+            line-height: 1.5;
-+        }
-+
-+        /* Upload Section */
-+        .upload-container {
-+            max-width: 800px;
-+            margin: 0 auto;
-+        }
-+
-+        .upload-card {
-+            background: rgba(255, 255, 255, 0.9);
-+            backdrop-filter: blur(20px);
-+            border: 2px dashed rgba(6, 4, 150, 0.3);
-+            border-radius: 20px;
-+            padding: 3rem;
-+            text-align: center;
-+            transition: all 0.3s ease;
-+            cursor: pointer;
-+            margin-bottom: 3rem;
-+        }
-+
-+        .upload-card:hover {
-+            border-color: #060496;
-+            background: rgba(248, 249, 255, 0.95);
-+            transform: translateY(-2px);
-+            box-shadow: 0 20px 40px rgba(6, 4, 150, 0.15);
-+        }
-+
-+        .upload-card.dragover {
-+            border-color: #060496;
-+            background: rgba(6, 4, 150, 0.05);
-+            transform: scale(1.02);
-+        }
-+
-+        .upload-icon {
-+            font-size: 4rem;
-+            margin-bottom: 1.5rem;
-+            opacity: 0.8;
-+        }
-+
-+        .upload-title {
-+            font-size: 1.5rem;
-+            font-weight: 600;
-+            color: #060496;
-+            margin-bottom: 1rem;
-+        }
-+
-+        .upload-description {
-+            color: #666;
-+            margin-bottom: 2rem;
-+            line-height: 1.6;
-+            font-size: 1.1rem;
-+        }
-+
-+        .upload-button {
-+            background: linear-gradient(135deg, #060496, #4040c8);
-+            color: white;
-+            border: none;
-+            padding: 15px 40px;
-+            border-radius: 25px;
-+            font-weight: 600;
-+            cursor: pointer;
-+            transition: all 0.3s ease;
-+            font-family: 'Poppins', sans-serif;
-+            font-size: 1rem;
-+        }
-+
-+        .upload-button:hover {
-+            transform: translateY(-2px);
-+            box-shadow: 0 8px 24px rgba(6, 4, 150, 0.3);
-+        }
-+
-+        .upload-status {
-+            margin-top: 1rem;
-+            padding: 1rem;
-+            border-radius: 10px;
-+            font-size: 1rem;
-+            font-weight: 500;
-+            display: none;
-+        }
-+
-+        .upload-status.success {
-+            background: rgba(34, 197, 94, 0.1);
-+            color: #166534;
-+            border: 1px solid rgba(34, 197, 94, 0.3);
-+        }
-+
-+        .upload-status.error {
-+            background: rgba(248, 113, 113, 0.1);
-+            color: #991b1b;
-+            border: 1px solid rgba(248, 113, 113, 0.3);
-+        }
-+
-+        .upload-status.processing {
-+            background: rgba(59, 130, 246, 0.1);
-+            color: #1e40af;
-+            border: 1px solid rgba(59, 130, 246, 0.3);
-+        }
-+
-+        .validation-results {
-+            margin-top: 2rem;
-+            display: none;
-+        }
-+
-+        .validation-card {
-+            background: rgba(255, 255, 255, 0.95);
-+            border-radius: 16px;
-+            padding: 2rem;
-+            margin-bottom: 1.5rem;
-+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-+            border-left: 4px solid #060496;
-+        }
-+
-+        .validation-header {
-+            display: flex;
-+            justify-content: space-between;
-+            align-items: center;
-+            margin-bottom: 1.5rem;
-+        }
-+
-+        .file-name {
-+            font-weight: 600;
-+            color: #060496;
-+            font-size: 1.1rem;
-+        }
-+
-+        .validation-status {
-+            padding: 0.5rem 1rem;
-+            border-radius: 20px;
-+            font-size: 0.85rem;
-+            font-weight: 600;
-+            text-transform: uppercase;
-+            letter-spacing: 0.5px;
-+        }
-+
-+        .status-valid {
-+            background: rgba(34, 197, 94, 0.15);
-+            color: #166534;
-+        }
-+
-+        .status-errors {
-+            background: rgba(248, 113, 113, 0.15);
-+            color: #991b1b;
-+        }
-+
-+        .status-warnings {
-+            background: rgba(251, 191, 36, 0.15);
-+            color: #92400e;
-+        }
-+
-+        .error-list {
-+            margin-top: 1rem;
-+        }
-+
-+        .error-item {
-+            display: flex;
-+            align-items: flex-start;
-+            gap: 12px;
-+            padding: 1rem;
-+            margin-bottom: 0.8rem;
-+            border-radius: 10px;
-+            font-size: 0.95rem;
-+        }
-+
-+        .error-item.critical {
-+            background: rgba(248, 113, 113, 0.08);
-+            border-left: 3px solid #f87171;
-+        }
-+
-+        .error-item.warning {
-+            background: rgba(251, 191, 36, 0.08);
-+            border-left: 3px solid #fbbf24;
-+        }
-+
-+        .error-item.info {
-+            background: rgba(59, 130, 246, 0.08);
-+            border-left: 3px solid #3b82f6;
-+        }
-+
-+        .error-icon {
-+            font-size: 1.2rem;
-+            line-height: 1;
-+        }
-+
-+        .error-content {
-+            flex: 1;
-+        }
-+
-+        .error-title {
-+            font-weight: 600;
-+            margin-bottom: 0.3rem;
-+        }
-+
-+        .error-description {
-+            color: #666;
-+            line-height: 1.5;
-+        }
-+
-+        .error-location {
-+            font-size: 0.8rem;
-+            color: #999;
-+            font-style: italic;
-+            margin-top: 0.3rem;
-+        }
-+
-+        @keyframes fadeInUp {
-+            from {
-+                opacity: 0;
-+                transform: translateY(20px);
-+            }
-+            to {
-+                opacity: 1;
-+                transform: translateY(0);
-+            }
-+        }
-+
-+        @media (max-width: 768px) {
-+            .container {
-+                padding: 2rem 1rem;
-+            }
-+            
-+            .hero-title {
-+                font-size: 2.2rem;
-+            }
-+            
-+            .hero-subtitle {
-+                font-size: 1.1rem;
-+            }
-+            
-+            .header {
-+                padding: 1rem 2rem;
-+            }
-+            
-+            .nav-controls {
-+                gap: 1rem;
-+            }
-+            
-+            .market-indicator {
-+                display: none;
-+            }
-+            
-+            .sections-grid {
-+                grid-template-columns: 1fr;
-+                gap: 1.5rem;
-+            }
-+            
-+            .section-card {
-+                padding: 2rem 1.5rem;
-+            }
-+
-+            .info-grid, .documents-grid {
-+                grid-template-columns: 1fr;
-+            }
-+        }
-+
-+        /* Scrollbar styling */
-+        .messages-container::-webkit-scrollbar {
-+            width: 6px;
-+        }
-+
-+        .messages-container::-webkit-scrollbar-track {
-+            background: rgba(6, 4, 150, 0.05);
-+            border-radius: 3px;
-+        }
-+
-+        .messages-container::-webkit-scrollbar-thumb {
-+            background: rgba(6, 4, 150, 0.2);
-+            border-radius: 3px;
-+        }
-+
-+        .messages-container::-webkit-scrollbar-thumb:hover {
-+            background: rgba(6, 4, 150, 0.3);
-+        }
-+    </style>
-+</head>
-+<body>
-+    <div class="header">
-+        <div class="logo">CBAM Expert</div>
-+        <div class="nav-controls">
-+            <button class="back-button" id="back-button" onclick="goHome()">← Back to Home</button>
-+            <div class="market-indicator">
-+                <div class="live-dot"></div>
-+                <span>EUA €64.15 (+1.2%)</span>
-+            </div>
-+            <div class="lang-toggle">
-+                <button class="lang-btn active" data-lang="en">EN</button>
-+                <button class="lang-btn" data-lang="de">DE</button>
-+            </div>
-+        </div>
-+    </div>
-+
-+    <div class="container">
-+        <!-- Main Dashboard -->
-+        <div class="dashboard" id="dashboard">
-+            <div class="hero-section">
-+                <h1 class="hero-title">CBAM Implementation Platform</h1>
-+                <p class="hero-subtitle">Build robust processes for carbon border adjustment compliance with practical tools and expert guidance</p>
-+            </div>
-+
-+            <div class="sections-grid">
-+                <div class="section-card" onclick="showSection('informative')">
-+                    <span class="section-icon">📚</span>
-+                    <div class="section-title">Implementation Guide</div>
-+                    <div class="section-description">Step-by-step processes and compliance frameworks</div>
-+                    <ul class="section-features">
-+                        <li>CBAM compliance roadmaps</li>
-+                        <li>Process templates & checklists</li>
-+                        <li>Regulatory requirement mapping</li>
-+                        <li>Best practice implementation guides</li>
-+                    </ul>
-+                </div>
-+
-+                <div class="section-card" onclick="showSection('documents')">
-+                    <span class="section-icon">📋</span>
-+                    <div class="section-title">Documents & Templates</div>
-+                    <div class="section-description">Ready-to-use forms, templates, and documentation</div>
-+                    <ul class="section-features">
-+                        <li>Official CBAM communication templates</li>
-+                        <li>Supplier engagement letters</li>
-+                        <li>Data collection frameworks</li>
-+                        <li>Compliance documentation templates</li>
-+                    </ul>
-+                </div>
-+
-+                <div class="section-card" onclick="showSection('conversation')">
-+                    <span class="section-icon">🤖</span>
-+                    <div class="section-title">Process Advisory</div>
-+                    <div class="section-description">AI-powered guidance for building compliance processes</div>
-+                    <ul class="section-features">
-+                        <li>Custom process development</li>
-+                        <li>Implementation troubleshooting</li>
-+                        <li>Regulatory interpretation</li>
-+                        <li>Strategic planning assistance</li>
-+                    </ul>
-+                </div>
-+
-+                <div class="section-card" onclick="showSection('upload')">
-+                    <span class="section-icon">✅</span>
-+                    <div class="section-title">Template Validation</div>
-+                    <div class="section-description">Automated quality control for supplier submissions</div>
-+                    <ul class="section-features">
-+                        <li>Automatic error detection</li>
-+                        <li>Completeness verification</li>
-+                        <li>Data quality assessment</li>
-+                        <li>Compliance validation reports</li>
-+                    </ul>
-+                </div>
-+            </div>
-+        </div>
-+
-+        <!-- Informative Section -->
-+        <div class="section-page" id="informative-section">
-+            <div class="section-header">
-+                <h1 class="section-page-title">CBAM Implementation Guide</h1>
-+                <p class="section-page-subtitle">Build systematic processes for carbon border adjustment compliance</p>
-+            </div>
-+
-+            <div class="info-grid">
-+                <div class="info-card">
-+                    <h3>🎯 Phase 1: Foundation Setup</h3>
-+                    <div class="process-step">
-+                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
-+                            <span class="step-number">1</span>
-+                            <div>
-+                                <div class="step-title">Establish CBAM Team & Governance</div>
-+                                <div class="step-content">Create cross-functional team with legal, procurement, operations, and finance representatives. Define roles, responsibilities, and reporting structures.</div>
-+                            </div>
-+                        </div>
-+                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
-+                            <span class="step-number">2</span>
-+                            <div>
-+                                <div class="step-title">Map Products & Supply Chains</div>
-+                                <div class="step-content">Identify all imported products within CBAM scope and trace their supply chains to determine reporting obligations.</div>
-+                            </div>
-+                        </div>
-+                        <div style="display: flex; align-items: flex-start;">
-+                            <span class="step-number">3</span>
-+                            <div>
-+                                <div class="step-title">Define Compliance Strategy</div>
-+                                <div class="step-content">Set data collection standards, timelines, and internal review mechanisms. Align CBAM objectives with corporate sustainability targets.</div>
-+                            </div>
-+                        </div>
-+                    </div>
-+                </div>
-+
-+                <div class="info-card">
-+                    <h3>🤝 Phase 2: Supplier Engagement</h3>
-+                    <div class="process-step">
-+                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
-+                            <span class="step-number">1</span>
-+                            <div>
-+                                <div class="step-title">Supplier Onboarding</div>
-+                                <div class="step-content">Notify suppliers of CBAM requirements. Provide guidance on data expectations and timeline for submissions.</div>
-+                            </div>
-+                        </div>
-+                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
-+                            <span class="step-number">2</span>
-+                            <div>
-+                                <div class="step-title">Collect Emissions Data</div>
-+                                <div class="step-content">Use standardized templates to gather verified emissions data and production details for each product.</div>
-+                            </div>
-+                        </div>
-+                        <div style="display: flex; align-items: flex-start;">
-+                            <span class="step-number">3</span>
-+                            <div>
-+                                <div class="step-title">Validate & Store Information</div>
-+                                <div class="step-content">Review submissions for completeness and accuracy, then upload to secure internal systems for audit trail.</div>
-+                            </div>
-+                        </div>
-+                    </div>
-+                </div>
-+
-+                <div class="info-card">
-+                    <h3>📊 Phase 3: Reporting & Review</h3>
-+                    <div class="process-step">
-+                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
-+                            <span class="step-number">1</span>
-+                            <div>
-+                                <div class="step-title">Compile CBAM Reports</div>
-+                                <div class="step-content">Aggregate supplier data into quarterly or annual CBAM declarations, ensuring traceability of every entry.</div>
-+                            </div>
-+                        </div>
-+                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
-+                            <span class="step-number">2</span>
-+                            <div>
-+                                <div class="step-title">Internal Review & Approval</div>
-+                                <div class="step-content">Have legal and management teams review reports and sign off on submitted figures before transmission.</div>
-+                            </div>
-+                        </div>
-+                        <div style="display: flex; align-items: flex-start;">
-+                            <span class="step-number">3</span>
-+                            <div>
-+                                <div class="step-title">Continuous Improvement</div>
-+                                <div class="step-content">Record lessons learned, update templates, and schedule training to improve future data quality and compliance readiness.</div>
-+                            </div>
-+                        </div>
-+                    </div>
-+                </div>
-+            </div>
-+        </div>
-+
-+        <!-- Documents Section -->
-+        <div class="section-page" id="documents-section">
-+            <div class="section-header">
-+                <h1 class="section-page-title">Documents & Templates</h1>
-+                <p class="section-page-subtitle">Downloadable resources for structured CBAM implementation</p>
-+            </div>
-+            <div class="documents-grid">
-+                <div class="document-card">
-+                    <div class="document-icon">📄</div>
-+                    <div class="document-title">Supplier Engagement Letter</div>
-+                    <div class="document-description">Template to inform suppliers about CBAM requirements and data expectations.</div>
-+                    <button class="download-button">Download</button>
-+                </div>
-+                <div class="document-card">
-+                    <div class="document-icon">📝</div>
-+                    <div class="document-title">Emission Data Template</div>
-+                    <div class="document-description">Structured sheet for capturing product-level emissions and production details.</div>
-+                    <button class="download-button">Download</button>
-+                </div>
-+                <div class="document-card">
-+                    <div class="document-icon">📊</div>
-+                    <div class="document-title">CBAM Reporting Checklist</div>
-+                    <div class="document-description">Operational checklist for verifying data completeness before submission.</div>
-+                    <button class="download-button">Download</button>
-+                </div>
-+                <div class="document-card">
-+                    <div class="document-icon">📁</div>
-+                    <div class="document-title">Internal Audit Log</div>
-+                    <div class="document-description">Template for recording review steps, approvals, and corrective actions.</div>
-+                    <button class="download-button">Download</button>
-+                </div>
-+            </div>
-+        </div>
-+
-+        <!-- Conversation Section -->
-+        <div class="section-page" id="conversation-section">
-+            <div class="section-header">
-+                <h1 class="section-page-title">Process Advisory</h1>
-+                <p class="section-page-subtitle">Ask implementation questions and receive structured guidance</p>
-+            </div>
-+
-+            <div class="process-prompts">
-+                <div class="process-prompt-card" data-prompt="How do I start engaging suppliers for CBAM data?">
-+                    <span class="prompt-icon">📨</span>
-+                    <div class="prompt-title">Supplier engagement</div>
-+                    <div class="prompt-description">Best practices for initiating the data collection process with suppliers.</div>
-+                </div>
-+                <div class="process-prompt-card" data-prompt="What should my internal CBAM governance structure look like?">
-+                    <span class="prompt-icon">🏛️</span>
-+                    <div class="prompt-title">Governance design</div>
-+                    <div class="prompt-description">Roles and responsibilities for cross-functional compliance teams.</div>
-+                </div>
-+                <div class="process-prompt-card" data-prompt="How can I verify emission data submitted by suppliers?">
-+                    <span class="prompt-icon">✔️</span>
-+                    <div class="prompt-title">Data validation</div>
-+                    <div class="prompt-description">Methods for checking completeness and accuracy of received data.</div>
-+                </div>
-+            </div>
-+
-+            <div class="conversation-container">
-+                <div class="chat-container">
-+                    <div class="messages-container" id="messages-container"></div>
-+                    <div class="thinking-indicator" id="thinking-indicator">
-+                        <div class="thinking-dots">
-+                            <div class="thinking-dot"></div>
-+                            <div class="thinking-dot"></div>
-+                            <div class="thinking-dot"></div>
-+                        </div>
-+                        <span>Thinking...</span>
-+                    </div>
-+                </div>
-+                <div class="input-section">
-+                    <div class="input-container">
-+                        <textarea id="chat-input" class="chat-input" rows="1" placeholder="Ask a process question..."></textarea>
-+                        <button class="send-button" id="send-button" disabled>Send</button>
-+                    </div>
-+                </div>
-+            </div>
-+        </div>
-+
-+        <!-- Upload Section -->
-+        <div class="section-page" id="upload-section">
-+            <div class="section-header">
-+                <h1 class="section-page-title">Template Validation</h1>
-+                <p class="section-page-subtitle">Check supplier submissions for completeness before uploading</p>
-+            </div>
-+
-+            <div class="upload-container">
-+                <div class="upload-card" id="upload-card">
-+                    <div class="upload-icon">📁</div>
-+                    <div class="upload-title">Drop files here or click to upload</div>
-+                    <div class="upload-description">Upload supplier templates to automatically check formatting, completeness, and emissions data integrity.</div>
-+                    <input type="file" id="file-input" multiple style="display:none;" />
-+                    <button class="upload-button" id="upload-button">Select Files</button>
-+                    <div class="upload-status" id="upload-status"></div>
-+                </div>
-+
-+                <div class="validation-results" id="validation-results"></div>
-+            </div>
-+        </div>
-+    </div>
-+
-+    <script>
-+        const dashboard = document.getElementById('dashboard');
-+        const backButton = document.getElementById('back-button');
-+        const sections = {
-+            informative: document.getElementById('informative-section'),
-+            documents: document.getElementById('documents-section'),
-+            conversation: document.getElementById('conversation-section'),
-+            upload: document.getElementById('upload-section')
-+        };
-+
-+        function showSection(key) {
-+            dashboard.style.display = 'none';
-+            Object.values(sections).forEach(s => s.style.display = 'none');
-+            sections[key].style.display = 'block';
-+            backButton.style.display = 'block';
-+        }
-+
-+        function goHome() {
-+            Object.values(sections).forEach(s => s.style.display = 'none');
-+            dashboard.style.display = 'block';
-+            backButton.style.display = 'none';
-+        }
-+
-+        document.querySelectorAll('.lang-btn').forEach(btn => {
-+            btn.addEventListener('click', () => {
-+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-+                btn.classList.add('active');
-+            });
-+        });
-+
-+        // Chat handling
-+        const chatInput = document.getElementById('chat-input');
-+        const sendButton = document.getElementById('send-button');
-+        const messagesContainer = document.getElementById('messages-container');
-+        const thinkingIndicator = document.getElementById('thinking-indicator');
-+
-+        chatInput.addEventListener('input', () => {
-+            sendButton.disabled = chatInput.value.trim() === '';
-+        });
-+
-+        function addMessage(text, isUser) {
-+            const message = document.createElement('div');
-+            message.className = 'message ' + (isUser ? 'message-user' : 'message-assistant');
-+            const content = document.createElement('div');
-+            content.className = 'message-content';
-+            content.textContent = text;
-+            message.appendChild(content);
-+            messagesContainer.appendChild(message);
-+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-+        }
-+
-+        sendButton.addEventListener('click', () => {
-+            const text = chatInput.value.trim();
-+            if (!text) return;
-+            addMessage(text, true);
-+            chatInput.value = '';
-+            sendButton.disabled = true;
-+            thinkingIndicator.style.display = 'flex';
-+            setTimeout(() => {
-+                thinkingIndicator.style.display = 'none';
-+                addMessage('This is a placeholder response providing guidance for: ' + text, false);
-+            }, 800);
-+        });
-+
-+        document.querySelectorAll('.process-prompt-card').forEach(card => {
-+            card.addEventListener('click', () => {
-+                chatInput.value = card.getAttribute('data-prompt');
-+                sendButton.disabled = false;
-+                chatInput.focus();
-+            });
-+        });
-+
-+        // Upload handling
-+        const uploadCard = document.getElementById('upload-card');
-+        const fileInput = document.getElementById('file-input');
-+        const uploadButton = document.getElementById('upload-button');
-+        const uploadStatus = document.getElementById('upload-status');
-+        const validationResults = document.getElementById('validation-results');
-+
-+        uploadButton.addEventListener('click', () => fileInput.click());
-+        uploadCard.addEventListener('dragover', e => {
-+            e.preventDefault();
-+            uploadCard.classList.add('dragover');
-+        });
-+        uploadCard.addEventListener('dragleave', () => uploadCard.classList.remove('dragover'));
-+        uploadCard.addEventListener('drop', e => {
-+            e.preventDefault();
-+            uploadCard.classList.remove('dragover');
-+            handleFiles(e.dataTransfer.files);
-+        });
-+        fileInput.addEventListener('change', e => handleFiles(e.target.files));
-+
-+        function handleFiles(files) {
-+            if (!files.length) return;
-+            uploadStatus.className = 'upload-status processing';
-+            uploadStatus.textContent = 'Processing ' + files.length + ' file(s)...';
-+            uploadStatus.style.display = 'block';
-+            setTimeout(() => {
-+                uploadStatus.className = 'upload-status success';
-+                uploadStatus.textContent = 'Files validated successfully';
-+                showValidation(files);
-+            }, 1000);
-+        }
-+
-+        function showValidation(files) {
-+            validationResults.innerHTML = '';
-+            Array.from(files).forEach(file => {
-+                const card = document.createElement('div');
-+                card.className = 'validation-card';
-+                card.innerHTML = `
-+                    <div class="validation-header">
-+                        <span class="file-name">${file.name}</span>
-+                        <span class="validation-status status-valid">Valid</span>
-+                    </div>
-+                    <div>No issues detected.</div>
-+                `;
-+                validationResults.appendChild(card);
-+            });
-+            validationResults.style.display = 'block';
-+        }
-+    </script>
-+</body>
-+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+  <title>CBAM Expert Platform</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --brand:#060496; --brand-2:#4040c8; --ink:#1a1a1a; --muted:#666;
+      --card: rgba(255,255,255,0.9);
+      --glass: rgba(255,255,255,0.8);
+      --line: rgba(6,4,150,0.1);
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .header {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(6,4,150,0.1);
+      padding: 1.5rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 1000;
+      box-shadow: 0 8px 32px rgba(6, 4, 150, 0.05);
+    }
+    .logo {
+      font-size: 1.8rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-controls { display:flex; gap:1rem; align-items:center; }
+    .market-indicator{
+      display:flex; align-items:center; gap:0.6rem; padding:0.5rem 1rem;
+      background: rgba(6,4,150,0.05); border-radius:25px; font-size:0.9rem; font-weight:500;
+    }
+    .live-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+    .lang-toggle{display:flex; background: rgba(6,4,150,0.05); border-radius: 20px; padding:4px;}
+    .lang-btn{padding:8px 16px;border:none;background:transparent;color:#666;border-radius:16px;cursor:pointer;font:500 14px Poppins;transition:.3s}
+    .lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 4px 12px rgba(6,4,150,.3)}
+    .back-button{
+      background: rgba(6,4,150,0.1); color: var(--brand); border:1px solid rgba(6,4,150,0.2);
+      padding:8px 16px; border-radius:20px; cursor:pointer; font:500 14px Poppins; transition:.2s; display:none;
+    }
+    .back-button:hover{ background: rgba(6,4,150,0.15); }
+    .container{ max-width:1400px; margin:0 auto; padding:3rem; min-height:calc(100vh - 120px); }
+
+    /* Dashboard */
+    .dashboard { display:block; }
+    .hero-section{ text-align:center; margin-bottom: 3rem; padding:1rem 0; }
+    .hero-title{
+      font-size: 2.6rem; font-weight:700;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom: .6rem;
+    }
+    .hero-subtitle{ font-size:1.1rem; color:#666; font-weight:400; max-width:800px; margin:0 auto; }
+    .sections-grid{
+      display:grid; grid-template-columns: repeat(auto-fit,minmax(320px,1fr)); gap: 2rem; max-width:1200px; margin: 2rem auto 0;
+    }
+    .section-card{
+      background: var(--glass); backdrop-filter: blur(20px); border-radius: 24px; padding: 2.2rem;
+      text-align:center; cursor:pointer; transition:.25s ease; border:1px solid rgba(6,4,150,.08);
+      box-shadow:0 20px 60px rgba(0,0,0,.05);
+    }
+    .section-card:hover{ transform: translateY(-6px); box-shadow:0 30px 80px rgba(6,4,150,.15); border-color: rgba(6,4,150,.2); }
+    .section-icon{ font-size:3rem; margin-bottom: .9rem; display:block; opacity:.85; }
+    .section-title{ font-size:1.35rem; font-weight:600; color:var(--brand); margin-bottom:.35rem; }
+    .section-description{ color:#666; font-size:.98rem; margin-bottom: .8rem; }
+    .section-features{ list-style:none; text-align:left; color:#777; font-size:.92rem; }
+    .section-features li{ padding:.28rem 0; position:relative; padding-left:1.3rem; }
+    .section-features li::before{ content:"✓"; position:absolute; left:0; color:var(--brand); font-weight:700; }
+
+    /* Section pages */
+    .section-page{ display:none; }
+    .section-header{ text-align:center; margin-bottom:2rem; }
+    .section-page-title{ font-size:2rem; font-weight:600; color:var(--brand); margin-bottom:.5rem;}
+    .section-page-subtitle{ font-size:1rem; color:#666; max-width:760px; margin:0 auto; }
+
+    /* Info/Guide */
+    .info-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(340px,1fr)); gap:1.5rem; margin: 2rem 0 1rem; }
+    .info-card{ background: var(--card); border-radius: 16px; padding: 1.4rem 1.4rem; box-shadow: 0 8px 24px rgba(0,0,0,.05); border-left: 4px solid var(--brand); }
+    .info-card h3{ color:var(--brand); font-weight:600; margin-bottom:.7rem; font-size:1.08rem; }
+    .process-step{
+      background: linear-gradient(135deg, rgba(6,4,150,.05), rgba(64,64,200,.05)); border-radius:12px; padding:1rem; margin-bottom: .9rem; border-left:3px solid var(--brand);
+    }
+    .step-row{ display:flex; align-items:flex-start; margin-bottom:.6rem; }
+    .step-number{ background:var(--brand); color:#fff; width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:600; margin-right:.7rem; font-size:.85rem; flex:0 0 28px;}
+    .step-title{ font-weight:600; color:var(--brand); margin-bottom:.35rem; }
+    .step-content{ color:#555; }
+    .guide-toolbar{
+      display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; justify-content:flex-end; margin: .2rem 0 1rem;
+    }
+    .btn{ background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#fff; border:none; padding:10px 16px; border-radius:12px; font-weight:600; cursor:pointer; transition:.2s; box-shadow: 0 8px 24px rgba(6,4,150,.25); }
+    .btn:hover{ transform: translateY(-1px); box-shadow:0 12px 28px rgba(6,4,150,.35); }
+    .btn.secondary{ background:#fff; color:var(--brand); border:1px solid rgba(6,4,150,.25); box-shadow:none; }
+    .btn.link{ background:transparent; color:var(--brand); border:none; box-shadow:none; padding:0; }
+    .mini{ font-size:.88rem; padding:8px 12px; border-radius:10px; }
+
+    /* Checklists & tables */
+    .table-card{ background: var(--card); border-radius:16px; padding: 1.2rem; box-shadow:0 8px 24px rgba(0,0,0,.05); border:1px solid rgba(6,4,150,.08); }
+    table{ width:100%; border-collapse: collapse; font-size:.95rem; }
+    th, td{ padding:.55rem .6rem; border-bottom:1px solid #eee; text-align:left; }
+    th{ color:#444; font-weight:600; }
+    tr:last-child td{ border-bottom:none; }
+    .row-actions{ display:flex; gap:.35rem; }
+    .pill{ display:inline-block; font-size:.78rem; padding:.18rem .5rem; border-radius:999px; border:1px solid rgba(6,4,150,.25); color:#333; background: rgba(6,4,150,.06); }
+
+    /* Documents */
+    .documents-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; margin:2rem 0; }
+    .document-card{ background: var(--card); border-radius:16px; padding:1.4rem; box-shadow:0 8px 24px rgba(0,0,0,.05); transition:.2s; cursor:pointer; border:1px solid rgba(6,4,150,.08);}
+    .document-card:hover{ transform: translateY(-3px); box-shadow: 0 16px 32px rgba(6,4,150,.1); }
+    .document-icon{ font-size:2rem; margin-bottom:.5rem; color:var(--brand);}
+    .document-title{ font-weight:600; color:var(--brand); margin-bottom:.35rem; }
+    .document-description{ color:#666; font-size:.9rem; margin-bottom:.6rem; }
+    .download-button{ background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#fff; border:none; padding:8px 16px; border-radius:12px; font-size:.9rem; cursor:pointer; transition:.2s; }
+    .download-button:hover{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(6,4,150,.3); }
+
+    /* Advisory / Chat */
+    .conversation-container{ max-width: 980px; margin: 0 auto; }
+    .chat-container{
+      background: var(--card); backdrop-filter: blur(20px); border-radius: 24px; padding: 1.2rem; margin: 1rem 0 1.2rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,.05); border: 1px solid rgba(6,4,150,.08); min-height: 460px; display:flex; flex-direction:column;
+    }
+    .messages-container{ flex:1; overflow-y:auto; margin-bottom:1rem; padding-right:10px; }
+    .message{ margin-bottom:1rem; animation: fadeInUp .45s ease-out; }
+    .message-user{ display:flex; justify-content:flex-end; }
+    .message-user .message-content{
+      background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#fff; padding: .9rem 1.1rem; border-radius:18px 18px 4px 18px; max-width: 72%; font-weight:500; box-shadow: 0 8px 24px rgba(6,4,150,.3);
+    }
+    .message-assistant{ display:flex; justify-content:flex-start; }
+    .message-assistant .message-content{
+      background: rgba(248,249,255,.85); border:1px solid rgba(6,4,150,.1); color:#1a1a1a; padding: 1rem 1.1rem; border-radius:18px 18px 18px 4px; max-width:88%; line-height:1.65; box-shadow: 0 8px 24px rgba(0,0,0,.05);
+    }
+    .message-assistant .message-content strong{ color:var(--brand); }
+    .thinking-indicator{ display:none; align-items:center; gap: 10px; padding:.9rem 1rem; background: rgba(248,249,255,.6); border-radius:18px 18px 18px 4px; margin-bottom:.8rem; border:1px solid rgba(6,4,150,.1);}
+    .thinking-dot{ width:8px; height:8px; background:var(--brand); border-radius:50%; animation: thinking 1.4s ease-in-out infinite both; }
+    .thinking-dots{ display:flex; gap:6px; }
+    .thinking-dot:nth-child(1){ animation-delay:-.32s } .thinking-dot:nth-child(2){ animation-delay:-.16s }
+    @keyframes thinking{0%,80%,100%{ transform:scale(.6); opacity:.3 }40%{ transform:scale(1); opacity:1 }}
+    .input-section{ background: var(--card); border-radius: 20px; padding: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,.05); border:1px solid rgba(6,4,150,.08); }
+    .input-container{ position:relative; display:flex; align-items:flex-end; gap:.7rem; }
+    .chat-input{ flex:1; border:none; outline:none; background:transparent; font: 500 1rem Poppins; padding:.6rem 0; resize:none; max-height:120px; line-height:1.5; color:#1a1a1a; }
+    .chat-input::placeholder{ color:#999; font-weight:400; }
+    .send-button{ background: linear-gradient(135deg, var(--brand), var(--brand-2)); border:none; border-radius:14px; padding:10px 16px; color:#fff; font-weight:600; cursor:pointer; transition:.2s; box-shadow:0 8px 24px rgba(6,4,150,.3); display:flex; align-items:center; gap:8px; }
+    .send-button:hover{ transform: translateY(-1px); box-shadow:0 12px 32px rgba(6,4,150,.4); }
+    .send-button:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+    .process-prompts{ display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:1rem; margin: .4rem 0 1rem; }
+    .process-prompt-card{ background: rgba(255,255,255,.75); backdrop-filter: blur(20px); border:1px solid rgba(6,4,150,.08); border-radius:14px; padding:1rem; cursor:pointer; transition:.2s; box-shadow:0 8px 24px rgba(0,0,0,.04); }
+    .process-prompt-card:hover{ transform: translateY(-3px); box-shadow:0 20px 40px rgba(6,4,150,.15); border-color: rgba(6,4,150,.2); }
+    .prompt-icon{ font-size:1.3rem; margin-bottom:.4rem; display:block; }
+    .prompt-title{ font-weight:600; color:var(--brand); margin-bottom:.25rem; font-size:1rem; }
+    .prompt-description{ color:#666; font-size:.9rem; line-height:1.4; }
+    .toolbar{ display:flex; gap:.5rem; justify-content:flex-end; margin:.3rem 0; }
+
+    /* Upload / Validation */
+    .upload-container{ max-width: 900px; margin: 0 auto; }
+    .upload-card{
+      background: var(--card); border:2px dashed rgba(6,4,150,.3); border-radius:20px; padding:2rem; text-align:center; transition:.2s; cursor:pointer; margin:1.2rem 0 1.6rem;
+    }
+    .upload-card:hover{ border-color: var(--brand); background: rgba(248,249,255,.95); transform: translateY(-2px); box-shadow:0 20px 40px rgba(6,4,150,.15); }
+    .upload-card.dragover{ border-color: var(--brand); background: rgba(6,4,150,.05); transform: scale(1.01); }
+    .upload-icon{ font-size:3rem; margin-bottom:.8rem; opacity:.85; }
+    .upload-title{ font-size:1.2rem; font-weight:600; color:var(--brand); margin-bottom:.3rem; }
+    .upload-description{ color:#666; margin-bottom:1rem; line-height:1.5; font-size:1rem; }
+    .upload-button{ background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#fff; border:none; padding:12px 24px; border-radius:14px; font-weight:600; cursor:pointer; transition:.2s; font-size:.98rem; }
+    .upload-status{ margin-top: .8rem; padding:.7rem; border-radius:10px; font-size:.95rem; font-weight:500; display:none; }
+    .upload-status.success{ background: rgba(34,197,94,.1); color:#166534; border:1px solid rgba(34,197,94,.3); }
+    .upload-status.error{ background: rgba(248,113,113,.1); color:#991b1b; border:1px solid rgba(248,113,113,.3); }
+    .upload-status.processing{ background: rgba(59,130,246,.1); color:#1e40af; border:1px solid rgba(59,130,246,.3); }
+    .validation-results{ margin-top:1rem; display:none; }
+    .validation-card{ background: var(--card); border-radius:16px; padding:1rem; margin-bottom:1rem; box-shadow:0 8px 24px rgba(0,0,0,.05); border-left:4px solid var(--brand); }
+    .validation-header{ display:flex; flex-wrap:wrap; gap:.6rem; justify-content:space-between; align-items:center; margin-bottom:.7rem; }
+    .file-name{ font-weight:600; color:var(--brand); font-size:1.05rem; }
+    .validation-status{ padding:.35rem .7rem; border-radius:20px; font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
+    .status-valid{ background: rgba(34,197,94,.15); color:#166534; }
+    .status-errors{ background: rgba(248,113,113,.15); color:#991b1b; }
+    .status-warnings{ background: rgba(251,191,36,.15); color:#92400e; }
+    .error-list{ margin-top:.4rem; }
+    .error-item{ display:flex; align-items:flex-start; gap:10px; padding:.7rem; margin-bottom:.55rem; border-radius:10px; font-size:.92rem; }
+    .error-item.critical{ background: rgba(248,113,113,.08); border-left:3px solid #f87171; }
+    .error-item.warning{ background: rgba(251,191,36,.08); border-left:3px solid #fbbf24; }
+    .error-item.info{ background: rgba(59,130,246,.08); border-left:3px solid #3b82f6; }
+    .error-icon{ font-size:1.1rem; line-height:1; }
+    .error-content{ flex:1; }
+    .error-title{ font-weight:600; margin-bottom:.15rem; }
+    .error-description{ color:#666; line-height:1.45; }
+    .error-location{ font-size:.78rem; color:#999; font-style:italic; margin-top:.2rem; }
+
+    /* Footer CTA */
+    .cta-footer{
+      margin-top:2rem; padding:1rem 1.2rem; border-radius:14px; background:linear-gradient(135deg, rgba(6,4,150,.06), rgba(64,64,200,.06));
+      border:1px dashed rgba(6,4,150,.25); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.8rem;
+    }
+    .cta-footer strong{ color:var(--brand); }
+    .cta-actions{ display:flex; gap:.5rem; flex-wrap:wrap; }
+
+    /* Utilities */
+    @keyframes fadeInUp{ from{opacity:0; transform: translateY(16px);} to{opacity:1; transform: translateY(0);} }
+    .hide{ display:none !important; }
+
+    @media (max-width: 768px){
+      .container{ padding:2rem 1rem; }
+      .hero-title{ font-size:2.2rem; }
+      .sections-grid{ grid-template-columns: 1fr; gap:1.3rem; }
+      .section-card{ padding:1.6rem; }
+      .info-grid, .documents-grid{ grid-template-columns: 1fr; }
+      .guide-toolbar, .toolbar{ justify-content:flex-start; }
+    }
+    /* Print */
+    @media print{
+      .header, .back-button, .lang-toggle, .market-indicator, .toolbar, .guide-toolbar, .input-section, .process-prompts, .upload-card, .cta-footer { display:none !important; }
+      .container{ padding: 1rem; }
+      .section-page{ display:block !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">CBAM Expert</div>
+    <div class="nav-controls">
+      <button class="back-button" id="back-button" onclick="goHome()">← Back to Home</button>
+      <div class="market-indicator"><div class="live-dot"></div><span>EUA €64.15 (+1.2%)</span></div>
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="de" onclick="setLang('de')">DE</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+      <div class="hero-section">
+        <h1 class="hero-title">CBAM Implementation Platform</h1>
+        <p class="hero-subtitle">Operationalize CBAM with a structured workflow: governance → data pipeline → calculation & QA → verification & registry → financial planning → audit trail.</p>
+      </div>
+
+      <div class="sections-grid">
+        <div class="section-card" onclick="showSection('informative')">
+          <span class="section-icon">📚</span>
+          <div class="section-title">Implementation Guide</div>
+          <div class="section-description">Step-by-step operating model for CBAM</div>
+          <ul class="section-features">
+            <li>Governance & roles (RACI)</li>
+            <li>Supplier data pipeline</li>
+            <li>Calculation & QA controls</li>
+            <li>Registry & verification flow</li>
+          </ul>
+        </div>
+        <div class="section-card" onclick="showSection('documents')">
+          <span class="section-icon">📋</span>
+          <div class="section-title">Documents & Templates</div>
+          <div class="section-description">Ready-to-use templates you can issue today</div>
+          <ul class="section-features">
+            <li>Supplier request pack</li>
+            <li>Emissions data forms</li>
+            <li>CN → product mapping</li>
+            <li>Evidence & audit checklist</li>
+          </ul>
+        </div>
+        <div class="section-card" onclick="showSection('conversation')">
+          <span class="section-icon">🤖</span>
+          <div class="section-title">Process Advisory</div>
+          <div class="section-description">Guided, process-first answers to unblock execution</div>
+          <ul class="section-features">
+            <li>Supplier playbooks</li>
+            <li>Budgeting & certificates</li>
+            <li>Audit & retention rules</li>
+            <li>Error remediation plans</li>
+          </ul>
+        </div>
+        <div class="section-card" onclick="showSection('upload')">
+          <span class="section-icon">✅</span>
+          <div class="section-title">Template Validation</div>
+          <div class="section-description">QC checks on supplier submissions</div>
+          <ul class="section-features">
+            <li>Schema & type checks</li>
+            <li>Period coverage sanity</li>
+            <li>Totals & consistency</li>
+            <li>Exportable QC report</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Implementation Guide -->
+    <div class="section-page" id="informative-section">
+      <div class="section-header">
+        <h1 class="section-page-title">CBAM Implementation Guide</h1>
+        <p class="section-page-subtitle">Use this as your operating manual. Every phase below is actionable and linked to templates and controls in this app.</p>
+      </div>
+
+      <div class="guide-toolbar">
+        <button class="btn mini" onclick="window.print()">Export as PDF</button>
+        <button class="btn secondary mini" onclick="downloadCSVFromRows('cbam_action_plan.csv', actionPlanToCSV())">Export Action Plan (CSV)</button>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>🎯 Phase 1: Foundation & Governance</h3>
+          <div class="process-step">
+            <div class="step-row">
+              <span class="step-number">1</span>
+              <div>
+                <div class="step-title">Create a CBAM RACI</div>
+                <div class="step-content">Cross-functional team (Legal, Procurement, Ops/Plant, Finance, Sustainability, IT). Define: <em>Responsible</em> (data owners), <em>Accountable</em> (CBAM lead), <em>Consulted</em> (verifier), <em>Informed</em> (management).</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">2</span>
+              <div>
+                <div class="step-title">Scope & Product Mapping</div>
+                <div class="step-content">Map CN codes to products, suppliers, and plants. Flag unknown/ambiguous CNs for legal review. Prioritize top 80% by import value.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">3</span>
+              <div>
+                <div class="step-title">Policies & SOPs</div>
+                <div class="step-content">Draft SOPs for data requests, calculation approach (default vs specific), verification, registry submissions, and record retention (≥10 years recommended).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>📦 Phase 2: Supplier Data Pipeline</h3>
+          <div class="process-step">
+            <div class="step-row">
+              <span class="step-number">1</span>
+              <div>
+                <div class="step-title">Segment Suppliers</div>
+                <div class="step-content">A-tier (high import value/volume) → request specific data first; B-tier → default data acceptable short-term; C-tier → monitor/phase up.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">2</span>
+              <div>
+                <div class="step-title">Issue the Request Pack</div>
+                <div class="step-content">Send cover letter, deadlines, template CSV, and “How-to” note. Include SLA (response ≤15 working days) and naming convention (<code>Supplier_CNCode_Period.csv</code>).</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">3</span>
+              <div>
+                <div class="step-title">Track & Remind</div>
+                <div class="step-content">Log status, send reminders at T+7/T+14, escalate at T+15. Validate each file upon receipt in the <strong>Template Validation</strong> section.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>🧮 Phase 3: Calculation & QA</h3>
+          <div class="process-step">
+            <div class="step-row">
+              <span class="step-number">1</span>
+              <div>
+                <div class="step-title">Choose Method</div>
+                <div class="step-content">Prefer <strong>specific</strong> emissions from supplier; fallback to <strong>default</strong> factors where allowed. Document rationale.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">2</span>
+              <div>
+                <div class="step-title">QA Controls</div>
+                <div class="step-content">Check period coverage, units (tCO₂e), and arithmetic (electricity + process ≈ total). Investigate outliers vs prior periods.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">3</span>
+              <div>
+                <div class="step-title">Sign-off</div>
+                <div class="step-content">Two-person rule: preparer & reviewer. Log changes with timestamps. Lock the file before verification.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>🧾 Phase 4: Verification & Registry</h3>
+          <div class="process-step">
+            <div class="step-row">
+              <span class="step-number">1</span>
+              <div>
+                <div class="step-title">Verifier Engagement</div>
+                <div class="step-content">Share evidence pack: data sources, meters, methodology, calculations. Resolve NCRs (non-conformities) promptly.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">2</span>
+              <div>
+                <div class="step-title">Registry Preparation</div>
+                <div class="step-content">Set/importer account, authorized declarants, user rights. Prepare upload-ready files and declarations per period.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>💶 Phase 5: Finance & Certificates</h3>
+          <div class="process-step">
+            <div class="step-row">
+              <span class="step-number">1</span>
+              <div>
+                <div class="step-title">Budgeting & Hedging Policy</div>
+                <div class="step-content">Define forecast method (rolling 12M), buying windows, and pass-through policy (pricing clauses to customers) aligned with legal.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">2</span>
+              <div>
+                <div class="step-title">Accruals & Reconciliation</div>
+                <div class="step-content">Monthly accruals based on expected certificates; reconcile quarterly vs actual emissions. Keep clean audit trail.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>🛡️ Phase 6: Audit Trail & Retention</h3>
+          <div class="process-step">
+            <div class="step-row">
+              <span class="step-number">1</span>
+              <div>
+                <div class="step-title">Evidence Management</div>
+                <div class="step-content">Centralize source data, calculations, approvals, verifier correspondence. Retention policy (recommend ≥10 years).</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">2</span>
+              <div>
+                <div class="step-title">Internal Audit</div>
+                <div class="step-content">Quarterly sample checks: data lineage, formula integrity, and submission completeness. Track findings to closure.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>🗓️ Phase 7: Milestones</h3>
+          <div class="process-step">
+            <div class="step-row">
+              <span class="step-number">1</span>
+              <div>
+                <div class="step-title">Operational Calendar</div>
+                <div class="step-content">Fix monthly windows for supplier collection, QA, verification handover, registry submission, and finance reconciliation.</div>
+              </div>
+            </div>
+            <div class="step-row">
+              <span class="step-number">2</span>
+              <div>
+                <div class="step-title">KPI Dashboard</div>
+                <div class="step-content">Track: supplier response rate, validation pass rate, verification NCRs, submission timeliness, cost variance.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Plan (editable table saved to localStorage) -->
+      <div class="table-card" id="action-plan-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem;">
+          <h3 style="color:var(--brand);">Action Plan (Live Tracker)</h3>
+          <div class="toolbar">
+            <button class="btn secondary mini" onclick="addActionRow()">Add Task</button>
+            <button class="btn secondary mini" onclick="clearCompleted()">Clear Completed</button>
+            <button class="btn secondary mini" onclick="resetActionPlan()">Reset</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table id="action-plan">
+            <thead>
+              <tr>
+                <th>✔</th>
+                <th>Task</th>
+                <th>Owner</th>
+                <th>Due</th>
+                <th>Phase</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="action-plan-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="cta-footer">
+        <div><strong>Need execution support?</strong> Entrenovu Hub can run your CBAM process end-to-end (supplier data, verification, registry, finance).</div>
+        <div class="cta-actions">
+          <a class="btn mini" href="mailto:info@entrenovu.com">Contact: info@entrenovu.com</a>
+          <a class="btn secondary mini" href="tel:+436506965789">+43 650 6965 789</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documents & Templates -->
+    <div class="section-page" id="documents-section">
+      <div class="section-header">
+        <h1 class="section-page-title">Documents & Templates</h1>
+        <p class="section-page-subtitle">Download clean templates that match the validator rules and the process guide.</p>
+      </div>
+
+      <div class="documents-grid">
+        <div class="document-card">
+          <div class="document-icon">📨</div>
+          <div class="document-title">Supplier Request Pack</div>
+          <div class="document-description">Cover note + SLA + instructions. Use for first contact with suppliers.</div>
+          <button class="download-button" onclick="downloadSupplierLetter()">Download Cover Letter (.txt)</button>
+        </div>
+
+        <div class="document-card">
+          <div class="document-icon">🧾</div>
+          <div class="document-title">Emissions Data Template</div>
+          <div class="document-description">CSV that suppliers fill. Compatible with the validator.</div>
+          <button class="download-button" onclick="downloadCSV('cbam_supplier_data_template.csv', supplierTemplateCSV())">Download CSV</button>
+        </div>
+
+        <div class="document-card">
+          <div class="document-icon">🔗</div>
+          <div class="document-title">CN → Product Mapping</div>
+          <div class="document-description">Map customs codes to your SKUs/products and suppliers.</div>
+          <button class="download-button" onclick="downloadCSV('cn_product_mapping.csv', cnMappingCSV())">Download CSV</button>
+        </div>
+
+        <div class="document-card">
+          <div class="document-icon">🧪</div>
+          <div class="document-title">Verification Statement</div>
+          <div class="document-description">Information the verifier expects to see for specific emissions.</div>
+          <button class="download-button" onclick="downloadCSV('verification_statement_template.csv', verificationTemplateCSV())">Download CSV</button>
+        </div>
+
+        <div class="document-card">
+          <div class="document-icon">🗂️</div>
+          <div class="document-title">Evidence & Audit Checklist</div>
+          <div class="document-description">Retention list: data sources, approvals, correspondence, reports.</div>
+          <button class="download-button" onclick="downloadCSV('evidence_checklist.csv', evidenceChecklistCSV())">Download CSV</button>
+        </div>
+
+        <div class="document-card">
+          <div class="document-icon">📤</div>
+          <div class="document-title">Quarterly Declaration Prep</div>
+          <div class="document-description">Pre-structure your period declaration before registry upload.</div>
+          <button class="download-button" onclick="downloadCSV('declaration_prep.csv', declarationPrepCSV())">Download CSV</button>
+        </div>
+      </div>
+
+      <div class="cta-footer">
+        <div><strong>Want the pack customized?</strong> We’ll localize language, add your legal clauses, and set your SLAs.</div>
+        <div class="cta-actions"><a class="btn mini" href="mailto:info@entrenovu.com">Request customization</a></div>
+      </div>
+    </div>
+
+    <!-- Process Advisory -->
+    <div class="section-page" id="conversation-section">
+      <div class="section-header">
+        <h1 class="section-page-title">Process Advisory</h1>
+        <p class="section-page-subtitle">Ask operational questions. You’ll get tactical, checklist-first responses you can execute today.</p>
+      </div>
+
+      <div class="conversation-container">
+        <div class="process-prompts">
+          <div class="process-prompt-card" onclick="quickPrompt('supplier plan')">
+            <span class="prompt-icon">📦</span>
+            <div class="prompt-title">Build supplier request plan</div>
+            <div class="prompt-description">Segmentation, SLA, reminders, escalation.</div>
+          </div>
+          <div class="process-prompt-card" onclick="quickPrompt('certificate budget')">
+            <span class="prompt-icon">💶</span>
+            <div class="prompt-title">Set certificate budget policy</div>
+            <div class="prompt-description">Forecasting, buying windows, pass-through.</div>
+          </div>
+          <div class="process-prompt-card" onclick="quickPrompt('audit trail')">
+            <span class="prompt-icon">🛡️</span>
+            <div class="prompt-title">Design audit trail</div>
+            <div class="prompt-description">Evidence list, approvals, retention.</div>
+          </div>
+          <div class="process-prompt-card" onclick="quickPrompt('fix validation')">
+            <span class="prompt-icon">🧰</span>
+            <div class="prompt-title">Fix validation errors</div>
+            <div class="prompt-description">Columns, units, totals, date ranges.</div>
+          </div>
+          <div class="process-prompt-card" onclick="quickPrompt('scope map')">
+            <span class="prompt-icon">🔎</span>
+            <div class="prompt-title">Scope & CN mapping</div>
+            <div class="prompt-description">CN → product → supplier mapping flow.</div>
+          </div>
+        </div>
+
+        <div class="chat-container" id="chat">
+          <div class="messages-container" id="messages"></div>
+          <div id="thinking" class="thinking-indicator"><div class="thinking-dots"><div class="thinking-dot"></div><div class="thinking-dot"></div><div class="thinking-dot"></div></div><span>Generating steps…</span></div>
+          <div class="input-section">
+            <div class="input-container">
+              <textarea id="chat-input" class="chat-input" rows="1" placeholder="Ask a process question (e.g., ‘How do I enforce SLAs with suppliers that delay data?’)"></textarea>
+              <button id="send-btn" class="send-button" onclick="sendMessage()">
+                <span>Send</span> ➤
+              </button>
+            </div>
+            <div class="toolbar">
+              <button class="btn secondary mini" onclick="exportConversation()">Export Conversation (.txt)</button>
+              <button class="btn secondary mini" onclick="clearConversation()">Clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-footer">
+        <div><strong>No bandwidth?</strong> Entrenovu Hub can operate the supplier pipeline and verification on your behalf under NDA.</div>
+        <div class="cta-actions"><a class="btn mini" href="mailto:info@entrenovu.com">Book implementation</a></div>
+      </div>
+    </div>
+
+    <!-- Upload & Validation -->
+    <div class="section-page" id="upload-section">
+      <div class="section-header">
+        <h1 class="section-page-title">Template Validation</h1>
+        <p class="section-page-subtitle">Drop a supplier CSV or JSON. We’ll run schema, type, math and period checks and give you an exportable QC report.</p>
+      </div>
+
+      <div class="upload-container">
+        <div id="upload-card" class="upload-card" onclick="triggerFile()">
+          <div class="upload-icon">📥</div>
+          <div class="upload-title">Drop files here or click to upload</div>
+          <div class="upload-description">Supported: <strong>.csv</strong> (comma or semicolon) and <strong>.json</strong>.</div>
+          <button class="upload-button" type="button">Choose File</button>
+          <input type="file" id="file-input" accept=".csv,.json" style="display:none" />
+          <div id="upload-status" class="upload-status"></div>
+        </div>
+
+        <div class="validation-results" id="validation-results">
+          <div class="validation-card">
+            <div class="validation-header">
+              <div class="file-name" id="file-name">—</div>
+              <div>
+                <span id="validation-badge" class="validation-status status-valid hide">VALID</span>
+                <span id="validation-badge-warn" class="validation-status status-warnings hide">WARNINGS</span>
+                <span id="validation-badge-err" class="validation-status status-errors hide">ERRORS</span>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:.6rem;">
+              <span id="completeness-pill" class="pill">Completeness: —</span>
+              <span id="rows-pill" class="pill">Rows: —</span>
+              <span id="period-pill" class="pill">Period: —</span>
+            </div>
+
+            <div class="toolbar">
+              <button class="btn secondary mini" onclick="downloadCSVFromRows('validation_report.csv', validationReportCSV)">Download QC Report</button>
+              <button class="btn secondary mini" onclick="downloadCSVFromRows('normalized_data.csv', normalizedDataCSV)">Download Normalized Data</button>
+            </div>
+
+            <div id="error-list" class="error-list"></div>
+          </div>
+
+          <div class="table-card">
+            <h3 style="color:var(--brand); margin-bottom:.4rem;">Expected Columns (rename to pass QC)</h3>
+            <div style="overflow-x:auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Column</th><th>Type</th><th>Required</th><th>Description</th>
+                  </tr>
+                </thead>
+                <tbody id="schema-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="cta-footer">
+          <div><strong>Need suppliers trained?</strong> We’ll brief your suppliers and return only QC-passed files.</div>
+          <div class="cta-actions"><a class="btn mini" href="mailto:info@entrenovu.com">Train suppliers</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ---------- Navigation / Language ---------- */
+    function showSection(key){
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('back-button').style.display = 'inline-block';
+      const ids = ['informative','documents','conversation','upload'];
+      ids.forEach(id => {
+        const el = document.getElementById(id+'-section');
+        if(el) el.style.display = (id===key) ? 'block' : 'none';
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function goHome(){
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('back-button').style.display = 'none';
+      ['informative','documents','conversation','upload'].forEach(id=>{
+        const el = document.getElementById(id+'-section'); if(el) el.style.display = 'none';
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function setLang(lang){
+      document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+      // Minimal placeholder: content remains English. Hook here if you add i18n later.
+    }
+
+    /* ---------- Action Plan (localStorage) ---------- */
+    const actionKey = 'cbam_action_plan_v1';
+    const phases = [
+      'Foundation','Suppliers','Calc & QA','Verification','Finance','Audit','Milestones'
+    ];
+    function defaultPlan(){
+      return [
+        {done:false, task:'Publish RACI & appoint CBAM Lead', owner:'Legal', due:futureDate(7), phase:'Foundation', status:'Open'},
+        {done:false, task:'Segment suppliers A/B/C', owner:'Procurement', due:futureDate(10), phase:'Suppliers', status:'Open'},
+        {done:false, task:'Issue request pack to A-tier', owner:'Procurement', due:futureDate(12), phase:'Suppliers', status:'Open'},
+        {done:false, task:'Define calculation method & QA checklist', owner:'Sustainability', due:futureDate(14), phase:'Calc & QA', status:'Open'},
+        {done:false, task:'Verifier engagement & evidence list', owner:'Sustainability', due:futureDate(18), phase:'Verification', status:'Open'},
+        {done:false, task:'Set certificate budgeting policy', owner:'Finance', due:futureDate(18), phase:'Finance', status:'Open'},
+      ];
+    }
+    function futureDate(d){ const dt = new Date(); dt.setDate(dt.getDate()+d); return dt.toISOString().slice(0,10); }
+    function loadPlan(){ const raw = localStorage.getItem(actionKey); return raw? JSON.parse(raw) : defaultPlan(); }
+    function savePlan(){ localStorage.setItem(actionKey, JSON.stringify(plan)); }
+    function renderPlan(){
+      const tbody = document.getElementById('action-plan-body'); tbody.innerHTML = '';
+      plan.forEach((row, idx)=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><input type="checkbox" ${row.done?'checked':''} onchange="toggleDone(${idx}, this.checked)"></td>
+          <td contenteditable oninput="editField(${idx}, 'task', this.innerText)">${escapeHTML(row.task)}</td>
+          <td contenteditable oninput="editField(${idx}, 'owner', this.innerText)">${escapeHTML(row.owner)}</td>
+          <td><input type="date" value="${row.due}" onchange="editField(${idx}, 'due', this.value)"></td>
+          <td>
+            <select onchange="editField(${idx}, 'phase', this.value)">
+              ${phases.map(p=>`<option ${row.phase===p?'selected':''}>${p}</option>`).join('')}
+            </select>
+          </td>
+          <td>
+            <select onchange="editField(${idx}, 'status', this.value)">
+              ${['Open','In progress','Blocked','Done'].map(s=>`<option ${row.status===s?'selected':''}>${s}</option>`).join('')}
+            </select>
+          </td>
+          <td class="row-actions">
+            <button class="btn mini" onclick="deleteRow(${idx})">Del</button>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+    }
+    function toggleDone(i, val){ plan[i].done = val; savePlan(); }
+    function editField(i, key, val){ plan[i][key] = val; savePlan(); }
+    function addActionRow(){ plan.push({done:false, task:'New task', owner:'', due:futureDate(7), phase:'Foundation', status:'Open'}); savePlan(); renderPlan(); }
+    function deleteRow(i){ plan.splice(i,1); savePlan(); renderPlan(); }
+    function clearCompleted(){ plan = plan.filter(r=>!r.done); savePlan(); renderPlan(); }
+    function resetActionPlan(){ plan = defaultPlan(); savePlan(); renderPlan(); }
+    function actionPlanToCSV(){
+      const header = ['done','task','owner','due','phase','status'];
+      const rows = plan.map(r=>[r.done, r.task, r.owner, r.due, r.phase, r.status]);
+      return [header].concat(rows).map(r=>r.map(csvEscape).join(',')).join('\n');
+    }
+    let plan = loadPlan(); renderPlan();
+
+    /* ---------- Documents & Templates ---------- */
+    function supplierTemplateCSV(){
+      const cols = [
+        'supplier_id','supplier_name','country','product_cn_code','product_description',
+        'production_route','reporting_period_start','reporting_period_end',
+        'electricity_emissions_tCO2e','process_emissions_tCO2e','total_emissions_tCO2e',
+        'renewable_electricity_kWh','grid_emission_factor_tCO2e_per_MWh',
+        'verifier_name','verifier_accreditation_id'
+      ];
+      const example = [
+        'S-001','Acme Steel','TR','7207','Semi-finished steel','EAF','2025-01-01','2025-03-31',
+        '120.5','35.2','155.7','250000','0.42','Verifier Ltd.','ACC-12345'
+      ];
+      return [cols.join(','), example.map(csvEscape).join(',')].join('\n');
+    }
+    function cnMappingCSV(){
+      const cols=['product_cn_code','product_name','internal_sku','supplier_id','plant','priority_tier'];
+      const row=['7207','Semi-finished steel','STL-001','S-001','Gebze','A'];
+      return [cols.join(','), row.join(',')].join('\n');
+    }
+    function verificationTemplateCSV(){
+      const cols=['supplier_id','verifier_name','accreditation_id','methodology_ref','evidence_links','comments'];
+      const row=['S-001','Verifier Ltd.','ACC-12345','Specific emissions per plant','https://…','All meters calibrated in 2024'];
+      return [cols.join(','), row.join(',')].join('\n');
+    }
+    function evidenceChecklistCSV(){
+      const cols=['area','item','required','retention_years','owner'];
+      const rows=[
+        ['Data','Raw meter logs (elec/process)','Yes','10','Plant Ops'],
+        ['Calc','Calc workbook (locked & signed)','Yes','10','Sustainability'],
+        ['Verification','NCRs & closure evidence','Yes','10','Sustainability'],
+        ['Legal','Supplier declarations & SLA','Yes','10','Legal'],
+        ['Finance','Accruals & reconciliations','Yes','10','Finance'],
+      ];
+      return [cols.join(',')].concat(rows.map(r=>r.join(','))).join('\n');
+    }
+    function declarationPrepCSV(){
+      const cols=['period','cn_code','supplier_id','quantity_t','specific_emissions_tCO2e','default_emissions_tCO2e','emissions_used_tCO2e','notes'];
+      const row=['2025-Q1','7207','S-001','1200','155.7','','155.7','Verified specific value'];
+      return [cols.join(','), row.join(',')].join('\n');
+    }
+    function downloadSupplierLetter(){
+      const text = `Subject: CBAM data request – action required
+
+Dear Supplier,
+
+We are implementing the EU Carbon Border Adjustment Mechanism (CBAM). Please provide emissions information for your products supplied to us for the reporting period indicated.
+
+What you will receive:
+1) CSV template (required columns and units)
+2) Instructions & SLA
+3) Examples
+
+Deadlines:
+• A-tier suppliers: respond within 15 working days
+• B/C-tier: respond within 20 working days
+
+Format & naming:
+• CSV or JSON
+• File name: <Supplier>_<CNCode>_<Period>.csv
+
+Quality requirements:
+• Period start/end dates
+• Units in tCO2e
+• Electricity + process ≈ total (±1%)
+• If verified: include verifier name and accreditation id
+
+Send files to: cbam@yourcompany.com (or use our secure upload)
+Questions: CBAM Lead via Legal.
+
+Regards,
+CBAM Program Office
+`;
+      downloadText('supplier_cover_letter.txt', text);
+    }
+
+    /* ---------- Advisory (rule-based generator) ---------- */
+    const messagesEl = document.getElementById('messages');
+    const chatInput = document.getElementById('chat-input');
+    const thinkingEl = document.getElementById('thinking');
+
+    function quickPrompt(type){
+      const map = {
+        'supplier plan': 'Help me design a supplier request plan with segmentation, SLA, reminders, and escalation.',
+        'certificate budget': 'How do we set a certificate budgeting and pass-through policy that Finance can operate?',
+        'audit trail': 'What evidence and retention rules should we implement for CBAM audit readiness?',
+        'fix validation': 'We failed validation. How do we fix columns, units, totals, and date ranges fast?',
+        'scope map': 'How do we map CN codes to our SKUs and suppliers with least friction?'
+      };
+      chatInput.value = map[type] || '';
+      sendMessage();
+    }
+
+    function sendMessage(){
+      const text = chatInput.value.trim(); if(!text) return;
+      addMessage('user', text);
+      chatInput.value = '';
+      thinkingEl.style.display = 'flex';
+      setTimeout(()=>{
+        const reply = advise(text);
+        addMessage('assistant', reply);
+        thinkingEl.style.display = 'none';
+      }, 450);
+    }
+
+    function advise(q){
+      const t = q.toLowerCase();
+      if(t.includes('supplier')) return supplierAdvice();
+      if(t.includes('budget') || t.includes('certificate') || t.includes('pass-through')) return financeAdvice();
+      if(t.includes('audit') || t.includes('evidence') || t.includes('retention')) return auditAdvice();
+      if(t.includes('validate') || t.includes('validation') || t.includes('columns') || t.includes('units') || t.includes('totals') || t.includes('date')) return validationAdvice();
+      if(t.includes('cn') || t.includes('scope') || t.includes('mapping')) return scopeAdvice();
+      return genericAdvice();
+    }
+
+    function supplierAdvice(){
+      return bulletify([
+        '**Segmentation:** Rank suppliers by import value/volume and CBAM exposure (A/B/C). Target A first.',
+        '**SLA:** 15 wd for A; 20 wd for B/C. Include naming convention and supported formats (CSV/JSON).',
+        '**Cadence:** T+0 issue pack → T+7 reminder → T+14 reminder → T+15 escalate to legal/commercial.',
+        '**Validation:** Run every file through Template Validation; reject files with missing required columns or wrong units.',
+        '**Fallback:** If specific data is not available, document default usage and move supplier to improvement plan.',
+      ], 'Supplier Request Plan – Playbook');
+    }
+    function financeAdvice(){
+      return bulletify([
+        '**Forecasting:** Rolling 12-month emissions based on expected imports × expected specific/default factors.',
+        '**Buying windows:** Define monthly/quarterly windows; avoid end-period rush purchases.',
+        '**Pass-through:** Contractual clauses to adjust pricing by certificate costs; align with Legal.',
+        '**Accounting:** Monthly accruals; quarterly reconciliation vs verified emissions.',
+        '**Governance:** Finance owner, CBAM lead reviewer, Management informed.',
+      ], 'Certificates & Finance – Operating Rules');
+    }
+    function auditAdvice(){
+      return bulletify([
+        '**Evidence pack:** raw meter logs, calc workbook (locked), approvals, verifier correspondence, NCR closures.',
+        '**Retention:** Recommend ≥10 years; central repository with version control.',
+        '**Access control:** Read-only for finalized periods; changes via change request ticket.',
+        '**Sampling:** Quarterly internal audit of random suppliers and periods.',
+      ], 'Audit Trail – Controls & Retention');
+    }
+    function validationAdvice(){
+      return bulletify([
+        '**Columns:** Must match the schema exactly (see “Expected Columns”).',
+        '**Units:** Emissions in tCO₂e; grid factor in tCO₂e/MWh; dates in YYYY-MM-DD.',
+        '**Math:** electricity + process must equal total within ±1%.',
+        '**Period:** start ≤ end; coverage should fit declared quarter or month.',
+        '**Normalization:** Use “Download Normalized Data” if headers are casing/spacing variants.',
+      ], 'Validation Failure – Fix Steps');
+    }
+    function scopeAdvice(){
+      return bulletify([
+        '**Baseline:** Export customs data (CN, quantities, suppliers).',
+        '**Linkage:** Create CN→SKU mapping (template provided).',
+        '**Prioritize:** Focus on CNs contributing 80% of value/volume.',
+        '**Review:** Legal to confirm ambiguous CNs. Update SOP and request pack accordingly.',
+      ], 'Scope & CN Mapping – Workflow');
+    }
+    function genericAdvice(){
+      return bulletify([
+        '**RACI:** Define owners for Suppliers, Calculation, Verification, Registry, Finance, and Audit.',
+        '**Cadence:** Fix monthly windows for data, QA, verification, submission, and finance.',
+        '**KPI:** Response rate, validation pass rate, NCR count, submission timeliness, cost variance.',
+      ], 'CBAM – Operating Model');
+    }
+
+    function bulletify(lines, title){
+      const items = lines.map(l => `<li>${l}</li>`).join('');
+      return `<strong>${title}</strong><br/><ul>${items}</ul>`;
+    }
+
+    function addMessage(role, html){
+      const wrap = document.createElement('div');
+      wrap.className = 'message '+(role==='user'?'message-user':'message-assistant');
+      const bubble = document.createElement('div');
+      bubble.className = 'message-content';
+      bubble.innerHTML = role==='user' ? escapeHTML(html) : html;
+      wrap.appendChild(bubble);
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      saveConversation();
+    }
+    function exportConversation(){
+      const text = Array.from(messagesEl.querySelectorAll('.message-content'))
+        .map(el => el.innerText).join('\n\n');
+      downloadText('cbam_conversation.txt', text);
+    }
+    function clearConversation(){ messagesEl.innerHTML=''; saveConversation(); }
+    function saveConversation(){ localStorage.setItem('cbam_convo_v1', messagesEl.innerHTML); }
+    function loadConversation(){ const raw = localStorage.getItem('cbam_convo_v1'); if(raw){ messagesEl.innerHTML = raw; } else { addMessage('assistant', genericAdvice()); } }
+    loadConversation();
+
+    /* ---------- Upload & Validation ---------- */
+    const schema = [
+      {key:'supplier_id', req:true, type:'string', desc:'Internal or supplier code'},
+      {key:'supplier_name', req:true, type:'string', desc:'Legal entity name'},
+      {key:'country', req:true, type:'string', desc:'ISO country or name'},
+      {key:'product_cn_code', req:true, type:'string', pattern:/^\d{4,8}$/, desc:'Customs CN code (4–8 digits)'},
+      {key:'product_description', req:false, type:'string', desc:'Free text'},
+      {key:'production_route', req:false, type:'string', allowed:['BF-BOF','EAF','DRI-EAF','Clinker','Ammonia-SMR','Ammonia-Electrolysis','Aluminium-prebake','Other'], desc:'Categorical'},
+      {key:'reporting_period_start', req:true, type:'date', desc:'YYYY-MM-DD'},
+      {key:'reporting_period_end', req:true, type:'date', desc:'YYYY-MM-DD'},
+      {key:'electricity_emissions_tCO2e', req:true, type:'number', min:0, desc:'tCO₂e'},
+      {key:'process_emissions_tCO2e', req:true, type:'number', min:0, desc:'tCO₂e'},
+      {key:'total_emissions_tCO2e', req:true, type:'number', min:0, desc:'tCO₂e (≈ sum of the two above)'},
+      {key:'renewable_electricity_kWh', req:false, type:'number', min:0, desc:'kWh'},
+      {key:'grid_emission_factor_tCO2e_per_MWh', req:false, type:'number', min:0, desc:'tCO₂e/MWh'},
+      {key:'verifier_name', req:false, type:'string', desc:'If verified'},
+      {key:'verifier_accreditation_id', req:false, type:'string', desc:'If verified'}
+    ];
+
+    const schemaTable = document.getElementById('schema-table');
+    schema.forEach(s=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${s.key}</td><td>${s.type}</td><td>${s.req?'Yes':'No'}</td><td>${s.desc || ''}</td>`;
+      schemaTable.appendChild(tr);
+    });
+
+    const uploadCard = document.getElementById('upload-card');
+    const fileInput = document.getElementById('file-input');
+    const statusEl = document.getElementById('upload-status');
+    const resultsEl = document.getElementById('validation-results');
+    const fileNameEl = document.getElementById('file-name');
+    const badgeValid = document.getElementById('validation-badge');
+    const badgeWarn = document.getElementById('validation-badge-warn');
+    const badgeErr = document.getElementById('validation-badge-err');
+    const errorList = document.getElementById('error-list');
+    const completenessPill = document.getElementById('completeness-pill');
+    const rowsPill = document.getElementById('rows-pill');
+    const periodPill = document.getElementById('period-pill');
+
+    let validationReportCSV = '';
+    let normalizedDataCSV = '';
+
+    function triggerFile(){ fileInput.click(); }
+    uploadCard.addEventListener('dragover', e=>{ e.preventDefault(); uploadCard.classList.add('dragover'); });
+    uploadCard.addEventListener('dragleave', ()=> uploadCard.classList.remove('dragover'));
+    uploadCard.addEventListener('drop', e=>{
+      e.preventDefault(); uploadCard.classList.remove('dragover');
+      const f = e.dataTransfer.files && e.dataTransfer.files[0]; if(f) handleFile(f);
+    });
+    fileInput.addEventListener('change', e=>{
+      const f = e.target.files && e.target.files[0]; if(f) handleFile(f);
+    });
+
+    function handleFile(file){
+      status('Processing '+file.name+' …','processing');
+      const reader = new FileReader();
+      reader.onload = () => {
+        try{
+          const ext = file.name.split('.').pop().toLowerCase();
+          let rows = [];
+          if(ext==='json'){
+            const json = JSON.parse(reader.result);
+            rows = Array.isArray(json) ? json : (json.rows || []);
+          }else{
+            rows = parseCSVFlexible(reader.result);
+          }
+          validateRows(file.name, rows);
+        }catch(err){
+          status('Failed: '+err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function status(text, type){
+      statusEl.textContent = text;
+      statusEl.className = 'upload-status '+(type||'');
+      statusEl.style.display = 'block';
+    }
+
+    function validateRows(fileName, rows){
+      if(!rows || !rows.length){ status('No rows found in file.', 'error'); return; }
+      // Normalize header keys
+      const normalized = rows.map(r => normalizeKeys(r));
+      const report = []; const out = []; let errors = 0; let warnings = 0;
+
+      // Completeness
+      const reqKeys = schema.filter(s=>s.req).map(s=>s.key);
+      const presentKeys = Object.keys(normalized[0]||{});
+      const completeness = Math.round(100 * reqKeys.filter(k=>presentKeys.includes(k)).length / reqKeys.length);
+
+      // Period aggregation
+      const periods = [];
+
+      normalized.forEach((row, idx)=>{
+        const idx1 = idx+1;
+        // Schema/type checks
+        schema.forEach(col=>{
+          const val = row[col.key];
+          if(col.req && (val===undefined || val===null || val==='')){
+            report.push(issue('critical', `Missing required column "${col.key}"`, `Row ${idx1}`, `Add value for ${col.key}`)); errors++; return;
+          }
+          if(val!==undefined && val!==null && val!==''){
+            // Type validation
+            if(col.type==='number'){
+              const num = Number(String(val).toString().replace(',','.'));
+              if(Number.isNaN(num)) { report.push(issue('critical', `Column "${col.key}" must be numeric`, `Row ${idx1}`, `Got "${val}"`)); errors++; }
+              else{
+                if(col.min!==undefined && num < col.min){ report.push(issue('critical', `"${col.key}" < ${col.min}`, `Row ${idx1}`, `Got ${num}`)); errors++; }
+                row[col.key] = num; // normalize
+              }
+            } else if(col.type==='date'){
+              const ok = /^\d{4}-\d{2}-\d{2}$/.test(String(val));
+              if(!ok) { report.push(issue('critical', `Column "${col.key}" must be YYYY-MM-DD`, `Row ${idx1}`, `Got "${val}"`)); errors++; }
+            } else if(col.pattern && !col.pattern.test(String(val))){
+              report.push(issue('critical', `Column "${col.key}" format invalid`, `Row ${idx1}`, `Got "${val}"`)); errors++;
+            } else if(col.allowed && !col.allowed.includes(String(val))){
+              report.push(issue('warning', `Unexpected value in "${col.key}"`, `Row ${idx1}`, `Got "${val}". Allowed: ${col.allowed.join(', ')}`)); warnings++;
+            }
+          }
+        });
+
+        // Math check (±1%)
+        const e = row.electricity_emissions_tCO2e ?? 0;
+        const p = row.process_emissions_tCO2e ?? 0;
+        const t = row.total_emissions_tCO2e ?? 0;
+        if([e,p,t].every(v => typeof v === 'number')){
+          const sum = e + p;
+          const tol = Math.max(0.01 * Math.abs(sum), 0.5); // 1% or 0.5 tCO2e minimum tolerance
+          if(Math.abs(sum - t) > tol){
+            report.push(issue('critical', 'Totals mismatch', `Row ${idx1}`, `electricity + process = ${sum.toFixed(2)} ≠ total ${t.toFixed(2)} (tol ±${tol.toFixed(2)})`)); errors++;
+          }
+        }
+
+        // Period logic
+        if(row.reporting_period_start && row.reporting_period_end){
+          const s = new Date(row.reporting_period_start); const e2 = new Date(row.reporting_period_end);
+          if(s > e2){
+            report.push(issue('critical','Period start is after end',`Row ${idx1}`,`${row.reporting_period_start} → ${row.reporting_period_end}`)); errors++;
+          } else {
+            periods.push([s, e2]);
+          }
+        }
+
+        out.push(row);
+      });
+
+      // Period coverage summary
+      let periodSummary = 'mixed';
+      if(periods.length){
+        const minS = new Date(Math.min.apply(null, periods.map(p=>p[0])));
+        const maxE = new Date(Math.max.apply(null, periods.map(p=>p[1])));
+        periodSummary = `${minS.toISOString().slice(0,10)} → ${maxE.toISOString().slice(0,10)}`;
+      }
+
+      // Build UI
+      fileNameEl.textContent = fileName;
+      completenessPill.textContent = `Completeness: ${completeness}%`;
+      rowsPill.textContent = `Rows: ${out.length}`;
+      periodPill.textContent = `Period: ${periodSummary}`;
+      [badgeValid, badgeWarn, badgeErr].forEach(b=>b.classList.add('hide'));
+      if(errors>0) badgeErr.classList.remove('hide');
+      else if(warnings>0) badgeWarn.classList.remove('hide');
+      else badgeValid.classList.remove('hide');
+
+      // Render report
+      errorList.innerHTML = report.map(r => renderIssue(r)).join('');
+      resultsEl.style.display = 'block';
+      status('Validation completed.', errors? 'error' : (warnings? 'processing' : 'success'));
+
+      // Prepare downloads
+      validationReportCSV = buildReportCSV(report);
+      normalizedDataCSV = rowsToCSV(out);
+    }
+
+    function normalizeKeys(row){
+      const map = {};
+      Object.keys(row).forEach(k=>{
+        const nk = String(k).trim().toLowerCase().replace(/\s+/g,'_');
+        map[nk] = row[k];
+      });
+      // Soft aliases for common header variants
+      const alias = {
+        'electricity_emissions':'electricity_emissions_tCO2e',
+        'process_emissions':'process_emissions_tCO2e',
+        'total_emissions':'total_emissions_tCO2e',
+        'grid_factor_tco2e_per_mwh':'grid_emission_factor_tCO2e_per_MWh'
+      };
+      Object.keys(alias).forEach(a=>{
+        if(map[a]!==undefined && map[alias[a]]===undefined){ map[alias[a]] = map[a]; }
+      });
+      return map;
+    }
+
+    function issue(level, title, where, details){ return {level,title,where,details}; }
+    function renderIssue(i){
+      const cls = i.level==='critical' ? 'critical' : i.level==='warning' ? 'warning' : 'info';
+      const icon = i.level==='critical' ? '⛔' : i.level==='warning' ? '⚠️' : 'ℹ️';
+      return `<div class="error-item ${cls}">
+        <div class="error-icon">${icon}</div>
+        <div class="error-content">
+          <div class="error-title">${escapeHTML(i.title)}</div>
+          <div class="error-description">${escapeHTML(i.details||'')}</div>
+          <div class="error-location">${escapeHTML(i.where||'')}</div>
+        </div>
+      </div>`;
+    }
+    function buildReportCSV(items){
+      const header = ['level','title','where','details'];
+      const rows = items.map(i=>[i.level, i.title, i.where||'', i.details||'']);
+      return [header].concat(rows).map(r=>r.map(csvEscape).join(',')).join('\n');
+    }
+    function rowsToCSV(rows){
+      const keys = Array.from(new Set(rows.flatMap(r=>Object.keys(r))));
+      const head = keys.join(',');
+      const lines = rows.map(r=> keys.map(k=> csvEscape(r[k] ?? '')).join(','));
+      return [head].concat(lines).join('\n');
+    }
+
+    /* ---------- CSV Parsing / Download helpers ---------- */
+    function parseCSVFlexible(text){
+      // auto-detect delimiter (comma/semicolon)
+      const firstLine = text.split(/\r?\n/).find(l=>l.trim().length>0) || '';
+      const delim = (firstLine.match(/;/g)||[]).length > (firstLine.match(/,/g)||[]).length ? ';' : ',';
+      return parseCSV(text, delim);
+    }
+    function parseCSV(text, delimiter){
+      const rows = [];
+      const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+      if(!lines.length) return rows;
+      const header = splitCSVLine(lines[0], delimiter).map(h=>h.trim());
+      for(let i=1;i<lines.length;i++){
+        if(!lines[i].trim()) continue;
+        const cells = splitCSVLine(lines[i], delimiter);
+        const obj = {};
+        header.forEach((h, idx)=>{ obj[h] = cells[idx]!==undefined ? cells[idx] : ''; });
+        rows.push(obj);
+      }
+      return rows;
+    }
+    function splitCSVLine(line, delimiter){
+      const out=[]; let cur=''; let inQ=false;
+      for(let i=0;i<line.length;i++){
+        const ch = line[i];
+        if(ch === '"'){ if(inQ && line[i+1]==='"'){ cur+='"'; i++; } else { inQ=!inQ; } }
+        else if(ch===delimiter && !inQ){ out.push(cur); cur=''; }
+        else{ cur+=ch; }
+      }
+      out.push(cur);
+      return out.map(x=>x.trim());
+    }
+    function downloadCSV(filename, content){
+      const blob = new Blob([content], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob); const a = document.createElement('a');
+      a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    }
+    function downloadCSVFromRows(filename, content){
+      if(typeof content === 'function'){ downloadCSV(filename, content()); }
+      else{ downloadCSV(filename, content); }
+    }
+    function downloadText(filename, content){
+      const blob = new Blob([content], {type:'text/plain;charset=utf-8;'});
+      const url = URL.createObjectURL(blob); const a = document.createElement('a');
+      a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    }
+    function rowsFromTable(tableId){
+      const rows=[]; const trs = document.querySelectorAll(`#${tableId} tbody tr`);
+      trs.forEach(tr=>{
+        const tds = tr.querySelectorAll('td');
+        rows.push({
+          done: tds[0].querySelector('input')?.checked || false,
+          task: tds[1].innerText.trim(),
+          owner: tds[2].innerText.trim(),
+          due: tds[3].querySelector('input')?.value || '',
+          phase: tds[4].querySelector('select')?.value || '',
+          status: tds[5].querySelector('select')?.value || ''
+        });
+      });
+      return rows;
+    }
+
+    /* ---------- Normalized data / reports suppliers ---------- */
+    function normalizedDataCSV(){ return normalizedDataCSV; } // placeholder for button handler (already set in validateRows)
+    function validationReportCSV(){ return validationReportCSV; }
+
+    /* ---------- Misc helpers ---------- */
+    function escapeHTML(s){
+      return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m]));
+    }
+    function csvEscape(v){
+      if(v===null || v===undefined) return '';
+      let s = String(v);
+      if(s.includes('"')) s = s.replace(/"/g,'""');
+      if(s.search(/[",\n;]/)>=0) s = `"${s}"`;
+      return s;
+    }
+
+    /* ---------- Initialize ---------- */
+    // preload minimal conversation
+    if(!localStorage.getItem('cbam_convo_v1')){
+      addMessage('assistant', genericAdvice());
+    }
+
+  </script>
+</body>
+</html>
