@@ -1,0 +1,1224 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>CBAM Expert Platform</title>
++    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
++    <style>
++        * {
++            margin: 0;
++            padding: 0;
++            box-sizing: border-box;
++        }
++
++        body {
++            font-family: 'Poppins', sans-serif;
++            background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
++            color: #1a1a1a;
++            line-height: 1.6;
++            overflow-x: hidden;
++        }
++
++        .header {
++            background: rgba(255, 255, 255, 0.95);
++            backdrop-filter: blur(20px);
++            border-bottom: 1px solid rgba(6, 4, 150, 0.1);
++            padding: 1.5rem 3rem;
++            display: flex;
++            justify-content: space-between;
++            align-items: center;
++            position: sticky;
++            top: 0;
++            z-index: 1000;
++            box-shadow: 0 8px 32px rgba(6, 4, 150, 0.05);
++        }
++
++        .logo {
++            font-size: 1.8rem;
++            font-weight: 700;
++            background: linear-gradient(135deg, #060496, #4040c8);
++            -webkit-background-clip: text;
++            -webkit-text-fill-color: transparent;
++            background-clip: text;
++        }
++
++        .nav-controls {
++            display: flex;
++            gap: 2rem;
++            align-items: center;
++        }
++
++        .market-indicator {
++            display: flex;
++            align-items: center;
++            gap: 1rem;
++            padding: 0.5rem 1.5rem;
++            background: rgba(6, 4, 150, 0.05);
++            border-radius: 25px;
++            font-size: 0.9rem;
++            font-weight: 500;
++        }
++
++        .live-dot {
++            width: 8px;
++            height: 8px;
++            background: #22c55e;
++            border-radius: 50%;
++            animation: pulse 2s infinite;
++        }
++
++        @keyframes pulse {
++            0%, 100% { opacity: 1; }
++            50% { opacity: 0.5; }
++        }
++
++        .lang-toggle {
++            display: flex;
++            background: rgba(6, 4, 150, 0.05);
++            border-radius: 20px;
++            padding: 4px;
++        }
++
++        .lang-btn {
++            padding: 8px 16px;
++            border: none;
++            background: transparent;
++            color: #666;
++            border-radius: 16px;
++            cursor: pointer;
++            font-family: 'Poppins', sans-serif;
++            font-size: 14px;
++            font-weight: 500;
++            transition: all 0.3s ease;
++        }
++
++        .lang-btn.active {
++            background: #060496;
++            color: white;
++            box-shadow: 0 4px 12px rgba(6, 4, 150, 0.3);
++        }
++
++        .back-button {
++            background: rgba(6, 4, 150, 0.1);
++            color: #060496;
++            border: 1px solid rgba(6, 4, 150, 0.2);
++            padding: 8px 16px;
++            border-radius: 20px;
++            cursor: pointer;
++            font-family: 'Poppins', sans-serif;
++            font-size: 14px;
++            font-weight: 500;
++            transition: all 0.3s ease;
++            display: none;
++        }
++
++        .back-button:hover {
++            background: rgba(6, 4, 150, 0.15);
++        }
++
++        .container {
++            max-width: 1400px;
++            margin: 0 auto;
++            padding: 3rem;
++            min-height: calc(100vh - 120px);
++        }
++
++        /* Main Dashboard */
++        .dashboard {
++            display: block;
++        }
++
++        .hero-section {
++            text-align: center;
++            margin-bottom: 4rem;
++            padding: 2rem 0;
++        }
++
++        .hero-title {
++            font-size: 2.8rem;
++            font-weight: 700;
++            background: linear-gradient(135deg, #060496, #4040c8);
++            -webkit-background-clip: text;
++            -webkit-text-fill-color: transparent;
++            background-clip: text;
++            margin-bottom: 1rem;
++        }
++
++        .hero-subtitle {
++            font-size: 1.3rem;
++            color: #666;
++            font-weight: 400;
++            max-width: 700px;
++            margin: 0 auto;
++        }
++
++        .sections-grid {
++            display: grid;
++            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
++            gap: 2rem;
++            max-width: 1200px;
++            margin: 0 auto;
++        }
++
++        .section-card {
++            background: rgba(255, 255, 255, 0.8);
++            backdrop-filter: blur(20px);
++            border-radius: 24px;
++            padding: 3rem 2.5rem;
++            text-align: center;
++            cursor: pointer;
++            transition: all 0.4s ease;
++            border: 1px solid rgba(6, 4, 150, 0.08);
++            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
++        }
++
++        .section-card:hover {
++            transform: translateY(-8px);
++            box-shadow: 0 30px 80px rgba(6, 4, 150, 0.15);
++            border-color: rgba(6, 4, 150, 0.2);
++        }
++
++        .section-icon {
++            font-size: 3.5rem;
++            margin-bottom: 1.5rem;
++            display: block;
++            opacity: 0.8;
++        }
++
++        .section-title {
++            font-size: 1.5rem;
++            font-weight: 600;
++            color: #060496;
++            margin-bottom: 1rem;
++        }
++
++        .section-description {
++            color: #666;
++            font-size: 1rem;
++            line-height: 1.6;
++            margin-bottom: 1.5rem;
++        }
++
++        .section-features {
++            list-style: none;
++            text-align: left;
++            color: #777;
++            font-size: 0.9rem;
++        }
++
++        .section-features li {
++            padding: 0.3rem 0;
++            position: relative;
++            padding-left: 1.5rem;
++        }
++
++        .section-features li::before {
++            content: "✓";
++            position: absolute;
++            left: 0;
++            color: #060496;
++            font-weight: bold;
++        }
++
++        /* Section Pages */
++        .section-page {
++            display: none;
++        }
++
++        .section-header {
++            text-align: center;
++            margin-bottom: 3rem;
++        }
++
++        .section-page-title {
++            font-size: 2.2rem;
++            font-weight: 600;
++            color: #060496;
++            margin-bottom: 1rem;
++        }
++
++        .section-page-subtitle {
++            font-size: 1.1rem;
++            color: #666;
++            max-width: 600px;
++            margin: 0 auto;
++        }
++
++        /* Informative Section */
++        .info-grid {
++            display: grid;
++            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
++            gap: 2rem;
++            margin-bottom: 3rem;
++        }
++
++        .info-card {
++            background: rgba(255, 255, 255, 0.9);
++            border-radius: 16px;
++            padding: 2rem;
++            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
++            border-left: 4px solid #060496;
++        }
++
++        .info-card h3 {
++            color: #060496;
++            font-weight: 600;
++            margin-bottom: 1rem;
++            font-size: 1.2rem;
++        }
++
++        .process-step {
++            background: linear-gradient(135deg, rgba(6, 4, 150, 0.05), rgba(64, 64, 200, 0.05));
++            border-radius: 12px;
++            padding: 1.5rem;
++            margin-bottom: 1.5rem;
++            border-left: 3px solid #060496;
++        }
++
++        .step-number {
++            background: #060496;
++            color: white;
++            width: 30px;
++            height: 30px;
++            border-radius: 50%;
++            display: inline-flex;
++            align-items: center;
++            justify-content: center;
++            font-weight: 600;
++            margin-right: 1rem;
++            font-size: 0.9rem;
++        }
++
++        .step-title {
++            font-weight: 600;
++            color: #060496;
++            margin-bottom: 0.5rem;
++        }
++
++        .step-content {
++            color: #555;
++            line-height: 1.6;
++        }
++
++        /* Documents Section */
++        .documents-grid {
++            display: grid;
++            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
++            gap: 2rem;
++            margin-bottom: 3rem;
++        }
++
++        .document-card {
++            background: rgba(255, 255, 255, 0.9);
++            border-radius: 16px;
++            padding: 2rem;
++            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
++            transition: all 0.3s ease;
++            cursor: pointer;
++        }
++
++        .document-card:hover {
++            transform: translateY(-4px);
++            box-shadow: 0 16px 32px rgba(6, 4, 150, 0.1);
++        }
++
++        .document-icon {
++            font-size: 2rem;
++            margin-bottom: 1rem;
++            color: #060496;
++        }
++
++        .document-title {
++            font-weight: 600;
++            color: #060496;
++            margin-bottom: 0.5rem;
++        }
++
++        .document-description {
++            color: #666;
++            font-size: 0.9rem;
++            margin-bottom: 1rem;
++        }
++
++        .download-button {
++            background: linear-gradient(135deg, #060496, #4040c8);
++            color: white;
++            border: none;
++            padding: 8px 20px;
++            border-radius: 20px;
++            font-size: 0.85rem;
++            cursor: pointer;
++            transition: all 0.3s ease;
++        }
++
++        .download-button:hover {
++            transform: translateY(-1px);
++            box-shadow: 0 4px 12px rgba(6, 4, 150, 0.3);
++        }
++
++        /* Conversation Section */
++        .conversation-container {
++            max-width: 900px;
++            margin: 0 auto;
++        }
++
++        .chat-container {
++            background: rgba(255, 255, 255, 0.9);
++            backdrop-filter: blur(20px);
++            border-radius: 24px;
++            padding: 2rem;
++            margin-bottom: 2rem;
++            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
++            border: 1px solid rgba(6, 4, 150, 0.08);
++            min-height: 500px;
++            display: flex;
++            flex-direction: column;
++        }
++
++        .messages-container {
++            flex: 1;
++            overflow-y: auto;
++            margin-bottom: 2rem;
++            padding-right: 10px;
++        }
++
++        .message {
++            margin-bottom: 2rem;
++            animation: fadeInUp 0.5s ease-out;
++        }
++
++        .message-user {
++            display: flex;
++            justify-content: flex-end;
++        }
++
++        .message-user .message-content {
++            background: linear-gradient(135deg, #060496, #4040c8);
++            color: white;
++            padding: 1.2rem 1.8rem;
++            border-radius: 20px 20px 4px 20px;
++            max-width: 70%;
++            font-weight: 500;
++            box-shadow: 0 8px 24px rgba(6, 4, 150, 0.3);
++        }
++
++        .message-assistant {
++            display: flex;
++            justify-content: flex-start;
++        }
++
++        .message-assistant .message-content {
++            background: rgba(248, 249, 255, 0.8);
++            border: 1px solid rgba(6, 4, 150, 0.1);
++            color: #1a1a1a;
++            padding: 1.5rem 2rem;
++            border-radius: 20px 20px 20px 4px;
++            max-width: 85%;
++            line-height: 1.7;
++            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
++        }
++
++        .message-assistant .message-content strong {
++            color: #060496;
++        }
++
++        .thinking-indicator {
++            display: none;
++            align-items: center;
++            gap: 12px;
++            padding: 1.5rem 2rem;
++            background: rgba(248, 249, 255, 0.6);
++            border-radius: 20px 20px 20px 4px;
++            margin-bottom: 1rem;
++            border: 1px solid rgba(6, 4, 150, 0.1);
++        }
++
++        .thinking-dots {
++            display: flex;
++            gap: 6px;
++        }
++
++        .thinking-dot {
++            width: 8px;
++            height: 8px;
++            background: #060496;
++            border-radius: 50%;
++            animation: thinking 1.4s ease-in-out infinite both;
++        }
++
++        .thinking-dot:nth-child(1) { animation-delay: -0.32s; }
++        .thinking-dot:nth-child(2) { animation-delay: -0.16s; }
++
++        @keyframes thinking {
++            0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
++            40% { transform: scale(1); opacity: 1; }
++        }
++
++        .input-section {
++            background: rgba(255, 255, 255, 0.9);
++            backdrop-filter: blur(20px);
++            border-radius: 24px;
++            padding: 1.5rem;
++            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
++            border: 1px solid rgba(6, 4, 150, 0.08);
++        }
++
++        .input-container {
++            position: relative;
++            display: flex;
++            align-items: flex-end;
++            gap: 1rem;
++        }
++
++        .chat-input {
++            flex: 1;
++            border: none;
++            outline: none;
++            background: transparent;
++            font-family: 'Poppins', sans-serif;
++            font-size: 1.1rem;
++            padding: 1rem 0;
++            resize: none;
++            max-height: 120px;
++            line-height: 1.5;
++            color: #1a1a1a;
++        }
++
++        .chat-input::placeholder {
++            color: #999;
++            font-weight: 400;
++        }
++
++        .send-button {
++            background: linear-gradient(135deg, #060496, #4040c8);
++            border: none;
++            border-radius: 16px;
++            padding: 12px 24px;
++            color: white;
++            font-weight: 600;
++            cursor: pointer;
++            transition: all 0.3s ease;
++            box-shadow: 0 8px 24px rgba(6, 4, 150, 0.3);
++            display: flex;
++            align-items: center;
++            gap: 8px;
++        }
++
++        .send-button:hover {
++            transform: translateY(-2px);
++            box-shadow: 0 12px 32px rgba(6, 4, 150, 0.4);
++        }
++
++        .send-button:disabled {
++            opacity: 0.6;
++            cursor: not-allowed;
++            transform: none;
++        }
++
++        .process-prompts {
++            display: grid;
++            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
++            gap: 1.5rem;
++            margin-bottom: 2rem;
++        }
++
++        .process-prompt-card {
++            background: rgba(255, 255, 255, 0.7);
++            backdrop-filter: blur(20px);
++            border: 1px solid rgba(6, 4, 150, 0.08);
++            border-radius: 16px;
++            padding: 1.5rem;
++            cursor: pointer;
++            transition: all 0.3s ease;
++            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
++        }
++
++        .process-prompt-card:hover {
++            transform: translateY(-4px);
++            box-shadow: 0 20px 40px rgba(6, 4, 150, 0.15);
++            border-color: rgba(6, 4, 150, 0.2);
++        }
++
++        .prompt-icon {
++            font-size: 1.5rem;
++            margin-bottom: 0.8rem;
++            display: block;
++        }
++
++        .prompt-title {
++            font-weight: 600;
++            color: #060496;
++            margin-bottom: 0.5rem;
++            font-size: 1.1rem;
++        }
++
++        .prompt-description {
++            color: #666;
++            font-size: 0.95rem;
++            line-height: 1.5;
++        }
++
++        /* Upload Section */
++        .upload-container {
++            max-width: 800px;
++            margin: 0 auto;
++        }
++
++        .upload-card {
++            background: rgba(255, 255, 255, 0.9);
++            backdrop-filter: blur(20px);
++            border: 2px dashed rgba(6, 4, 150, 0.3);
++            border-radius: 20px;
++            padding: 3rem;
++            text-align: center;
++            transition: all 0.3s ease;
++            cursor: pointer;
++            margin-bottom: 3rem;
++        }
++
++        .upload-card:hover {
++            border-color: #060496;
++            background: rgba(248, 249, 255, 0.95);
++            transform: translateY(-2px);
++            box-shadow: 0 20px 40px rgba(6, 4, 150, 0.15);
++        }
++
++        .upload-card.dragover {
++            border-color: #060496;
++            background: rgba(6, 4, 150, 0.05);
++            transform: scale(1.02);
++        }
++
++        .upload-icon {
++            font-size: 4rem;
++            margin-bottom: 1.5rem;
++            opacity: 0.8;
++        }
++
++        .upload-title {
++            font-size: 1.5rem;
++            font-weight: 600;
++            color: #060496;
++            margin-bottom: 1rem;
++        }
++
++        .upload-description {
++            color: #666;
++            margin-bottom: 2rem;
++            line-height: 1.6;
++            font-size: 1.1rem;
++        }
++
++        .upload-button {
++            background: linear-gradient(135deg, #060496, #4040c8);
++            color: white;
++            border: none;
++            padding: 15px 40px;
++            border-radius: 25px;
++            font-weight: 600;
++            cursor: pointer;
++            transition: all 0.3s ease;
++            font-family: 'Poppins', sans-serif;
++            font-size: 1rem;
++        }
++
++        .upload-button:hover {
++            transform: translateY(-2px);
++            box-shadow: 0 8px 24px rgba(6, 4, 150, 0.3);
++        }
++
++        .upload-status {
++            margin-top: 1rem;
++            padding: 1rem;
++            border-radius: 10px;
++            font-size: 1rem;
++            font-weight: 500;
++            display: none;
++        }
++
++        .upload-status.success {
++            background: rgba(34, 197, 94, 0.1);
++            color: #166534;
++            border: 1px solid rgba(34, 197, 94, 0.3);
++        }
++
++        .upload-status.error {
++            background: rgba(248, 113, 113, 0.1);
++            color: #991b1b;
++            border: 1px solid rgba(248, 113, 113, 0.3);
++        }
++
++        .upload-status.processing {
++            background: rgba(59, 130, 246, 0.1);
++            color: #1e40af;
++            border: 1px solid rgba(59, 130, 246, 0.3);
++        }
++
++        .validation-results {
++            margin-top: 2rem;
++            display: none;
++        }
++
++        .validation-card {
++            background: rgba(255, 255, 255, 0.95);
++            border-radius: 16px;
++            padding: 2rem;
++            margin-bottom: 1.5rem;
++            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
++            border-left: 4px solid #060496;
++        }
++
++        .validation-header {
++            display: flex;
++            justify-content: space-between;
++            align-items: center;
++            margin-bottom: 1.5rem;
++        }
++
++        .file-name {
++            font-weight: 600;
++            color: #060496;
++            font-size: 1.1rem;
++        }
++
++        .validation-status {
++            padding: 0.5rem 1rem;
++            border-radius: 20px;
++            font-size: 0.85rem;
++            font-weight: 600;
++            text-transform: uppercase;
++            letter-spacing: 0.5px;
++        }
++
++        .status-valid {
++            background: rgba(34, 197, 94, 0.15);
++            color: #166534;
++        }
++
++        .status-errors {
++            background: rgba(248, 113, 113, 0.15);
++            color: #991b1b;
++        }
++
++        .status-warnings {
++            background: rgba(251, 191, 36, 0.15);
++            color: #92400e;
++        }
++
++        .error-list {
++            margin-top: 1rem;
++        }
++
++        .error-item {
++            display: flex;
++            align-items: flex-start;
++            gap: 12px;
++            padding: 1rem;
++            margin-bottom: 0.8rem;
++            border-radius: 10px;
++            font-size: 0.95rem;
++        }
++
++        .error-item.critical {
++            background: rgba(248, 113, 113, 0.08);
++            border-left: 3px solid #f87171;
++        }
++
++        .error-item.warning {
++            background: rgba(251, 191, 36, 0.08);
++            border-left: 3px solid #fbbf24;
++        }
++
++        .error-item.info {
++            background: rgba(59, 130, 246, 0.08);
++            border-left: 3px solid #3b82f6;
++        }
++
++        .error-icon {
++            font-size: 1.2rem;
++            line-height: 1;
++        }
++
++        .error-content {
++            flex: 1;
++        }
++
++        .error-title {
++            font-weight: 600;
++            margin-bottom: 0.3rem;
++        }
++
++        .error-description {
++            color: #666;
++            line-height: 1.5;
++        }
++
++        .error-location {
++            font-size: 0.8rem;
++            color: #999;
++            font-style: italic;
++            margin-top: 0.3rem;
++        }
++
++        @keyframes fadeInUp {
++            from {
++                opacity: 0;
++                transform: translateY(20px);
++            }
++            to {
++                opacity: 1;
++                transform: translateY(0);
++            }
++        }
++
++        @media (max-width: 768px) {
++            .container {
++                padding: 2rem 1rem;
++            }
++            
++            .hero-title {
++                font-size: 2.2rem;
++            }
++            
++            .hero-subtitle {
++                font-size: 1.1rem;
++            }
++            
++            .header {
++                padding: 1rem 2rem;
++            }
++            
++            .nav-controls {
++                gap: 1rem;
++            }
++            
++            .market-indicator {
++                display: none;
++            }
++            
++            .sections-grid {
++                grid-template-columns: 1fr;
++                gap: 1.5rem;
++            }
++            
++            .section-card {
++                padding: 2rem 1.5rem;
++            }
++
++            .info-grid, .documents-grid {
++                grid-template-columns: 1fr;
++            }
++        }
++
++        /* Scrollbar styling */
++        .messages-container::-webkit-scrollbar {
++            width: 6px;
++        }
++
++        .messages-container::-webkit-scrollbar-track {
++            background: rgba(6, 4, 150, 0.05);
++            border-radius: 3px;
++        }
++
++        .messages-container::-webkit-scrollbar-thumb {
++            background: rgba(6, 4, 150, 0.2);
++            border-radius: 3px;
++        }
++
++        .messages-container::-webkit-scrollbar-thumb:hover {
++            background: rgba(6, 4, 150, 0.3);
++        }
++    </style>
++</head>
++<body>
++    <div class="header">
++        <div class="logo">CBAM Expert</div>
++        <div class="nav-controls">
++            <button class="back-button" id="back-button" onclick="goHome()">← Back to Home</button>
++            <div class="market-indicator">
++                <div class="live-dot"></div>
++                <span>EUA €64.15 (+1.2%)</span>
++            </div>
++            <div class="lang-toggle">
++                <button class="lang-btn active" data-lang="en">EN</button>
++                <button class="lang-btn" data-lang="de">DE</button>
++            </div>
++        </div>
++    </div>
++
++    <div class="container">
++        <!-- Main Dashboard -->
++        <div class="dashboard" id="dashboard">
++            <div class="hero-section">
++                <h1 class="hero-title">CBAM Implementation Platform</h1>
++                <p class="hero-subtitle">Build robust processes for carbon border adjustment compliance with practical tools and expert guidance</p>
++            </div>
++
++            <div class="sections-grid">
++                <div class="section-card" onclick="showSection('informative')">
++                    <span class="section-icon">📚</span>
++                    <div class="section-title">Implementation Guide</div>
++                    <div class="section-description">Step-by-step processes and compliance frameworks</div>
++                    <ul class="section-features">
++                        <li>CBAM compliance roadmaps</li>
++                        <li>Process templates & checklists</li>
++                        <li>Regulatory requirement mapping</li>
++                        <li>Best practice implementation guides</li>
++                    </ul>
++                </div>
++
++                <div class="section-card" onclick="showSection('documents')">
++                    <span class="section-icon">📋</span>
++                    <div class="section-title">Documents & Templates</div>
++                    <div class="section-description">Ready-to-use forms, templates, and documentation</div>
++                    <ul class="section-features">
++                        <li>Official CBAM communication templates</li>
++                        <li>Supplier engagement letters</li>
++                        <li>Data collection frameworks</li>
++                        <li>Compliance documentation templates</li>
++                    </ul>
++                </div>
++
++                <div class="section-card" onclick="showSection('conversation')">
++                    <span class="section-icon">🤖</span>
++                    <div class="section-title">Process Advisory</div>
++                    <div class="section-description">AI-powered guidance for building compliance processes</div>
++                    <ul class="section-features">
++                        <li>Custom process development</li>
++                        <li>Implementation troubleshooting</li>
++                        <li>Regulatory interpretation</li>
++                        <li>Strategic planning assistance</li>
++                    </ul>
++                </div>
++
++                <div class="section-card" onclick="showSection('upload')">
++                    <span class="section-icon">✅</span>
++                    <div class="section-title">Template Validation</div>
++                    <div class="section-description">Automated quality control for supplier submissions</div>
++                    <ul class="section-features">
++                        <li>Automatic error detection</li>
++                        <li>Completeness verification</li>
++                        <li>Data quality assessment</li>
++                        <li>Compliance validation reports</li>
++                    </ul>
++                </div>
++            </div>
++        </div>
++
++        <!-- Informative Section -->
++        <div class="section-page" id="informative-section">
++            <div class="section-header">
++                <h1 class="section-page-title">CBAM Implementation Guide</h1>
++                <p class="section-page-subtitle">Build systematic processes for carbon border adjustment compliance</p>
++            </div>
++
++            <div class="info-grid">
++                <div class="info-card">
++                    <h3>🎯 Phase 1: Foundation Setup</h3>
++                    <div class="process-step">
++                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
++                            <span class="step-number">1</span>
++                            <div>
++                                <div class="step-title">Establish CBAM Team & Governance</div>
++                                <div class="step-content">Create cross-functional team with legal, procurement, operations, and finance representatives. Define roles, responsibilities, and reporting structures.</div>
++                            </div>
++                        </div>
++                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
++                            <span class="step-number">2</span>
++                            <div>
++                                <div class="step-title">Map Products & Supply Chains</div>
++                                <div class="step-content">Identify all imported products within CBAM scope and trace their supply chains to determine reporting obligations.</div>
++                            </div>
++                        </div>
++                        <div style="display: flex; align-items: flex-start;">
++                            <span class="step-number">3</span>
++                            <div>
++                                <div class="step-title">Define Compliance Strategy</div>
++                                <div class="step-content">Set data collection standards, timelines, and internal review mechanisms. Align CBAM objectives with corporate sustainability targets.</div>
++                            </div>
++                        </div>
++                    </div>
++                </div>
++
++                <div class="info-card">
++                    <h3>🤝 Phase 2: Supplier Engagement</h3>
++                    <div class="process-step">
++                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
++                            <span class="step-number">1</span>
++                            <div>
++                                <div class="step-title">Supplier Onboarding</div>
++                                <div class="step-content">Notify suppliers of CBAM requirements. Provide guidance on data expectations and timeline for submissions.</div>
++                            </div>
++                        </div>
++                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
++                            <span class="step-number">2</span>
++                            <div>
++                                <div class="step-title">Collect Emissions Data</div>
++                                <div class="step-content">Use standardized templates to gather verified emissions data and production details for each product.</div>
++                            </div>
++                        </div>
++                        <div style="display: flex; align-items: flex-start;">
++                            <span class="step-number">3</span>
++                            <div>
++                                <div class="step-title">Validate & Store Information</div>
++                                <div class="step-content">Review submissions for completeness and accuracy, then upload to secure internal systems for audit trail.</div>
++                            </div>
++                        </div>
++                    </div>
++                </div>
++
++                <div class="info-card">
++                    <h3>📊 Phase 3: Reporting & Review</h3>
++                    <div class="process-step">
++                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
++                            <span class="step-number">1</span>
++                            <div>
++                                <div class="step-title">Compile CBAM Reports</div>
++                                <div class="step-content">Aggregate supplier data into quarterly or annual CBAM declarations, ensuring traceability of every entry.</div>
++                            </div>
++                        </div>
++                        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
++                            <span class="step-number">2</span>
++                            <div>
++                                <div class="step-title">Internal Review & Approval</div>
++                                <div class="step-content">Have legal and management teams review reports and sign off on submitted figures before transmission.</div>
++                            </div>
++                        </div>
++                        <div style="display: flex; align-items: flex-start;">
++                            <span class="step-number">3</span>
++                            <div>
++                                <div class="step-title">Continuous Improvement</div>
++                                <div class="step-content">Record lessons learned, update templates, and schedule training to improve future data quality and compliance readiness.</div>
++                            </div>
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </div>
++
++        <!-- Documents Section -->
++        <div class="section-page" id="documents-section">
++            <div class="section-header">
++                <h1 class="section-page-title">Documents & Templates</h1>
++                <p class="section-page-subtitle">Downloadable resources for structured CBAM implementation</p>
++            </div>
++            <div class="documents-grid">
++                <div class="document-card">
++                    <div class="document-icon">📄</div>
++                    <div class="document-title">Supplier Engagement Letter</div>
++                    <div class="document-description">Template to inform suppliers about CBAM requirements and data expectations.</div>
++                    <button class="download-button">Download</button>
++                </div>
++                <div class="document-card">
++                    <div class="document-icon">📝</div>
++                    <div class="document-title">Emission Data Template</div>
++                    <div class="document-description">Structured sheet for capturing product-level emissions and production details.</div>
++                    <button class="download-button">Download</button>
++                </div>
++                <div class="document-card">
++                    <div class="document-icon">📊</div>
++                    <div class="document-title">CBAM Reporting Checklist</div>
++                    <div class="document-description">Operational checklist for verifying data completeness before submission.</div>
++                    <button class="download-button">Download</button>
++                </div>
++                <div class="document-card">
++                    <div class="document-icon">📁</div>
++                    <div class="document-title">Internal Audit Log</div>
++                    <div class="document-description">Template for recording review steps, approvals, and corrective actions.</div>
++                    <button class="download-button">Download</button>
++                </div>
++            </div>
++        </div>
++
++        <!-- Conversation Section -->
++        <div class="section-page" id="conversation-section">
++            <div class="section-header">
++                <h1 class="section-page-title">Process Advisory</h1>
++                <p class="section-page-subtitle">Ask implementation questions and receive structured guidance</p>
++            </div>
++
++            <div class="process-prompts">
++                <div class="process-prompt-card" data-prompt="How do I start engaging suppliers for CBAM data?">
++                    <span class="prompt-icon">📨</span>
++                    <div class="prompt-title">Supplier engagement</div>
++                    <div class="prompt-description">Best practices for initiating the data collection process with suppliers.</div>
++                </div>
++                <div class="process-prompt-card" data-prompt="What should my internal CBAM governance structure look like?">
++                    <span class="prompt-icon">🏛️</span>
++                    <div class="prompt-title">Governance design</div>
++                    <div class="prompt-description">Roles and responsibilities for cross-functional compliance teams.</div>
++                </div>
++                <div class="process-prompt-card" data-prompt="How can I verify emission data submitted by suppliers?">
++                    <span class="prompt-icon">✔️</span>
++                    <div class="prompt-title">Data validation</div>
++                    <div class="prompt-description">Methods for checking completeness and accuracy of received data.</div>
++                </div>
++            </div>
++
++            <div class="conversation-container">
++                <div class="chat-container">
++                    <div class="messages-container" id="messages-container"></div>
++                    <div class="thinking-indicator" id="thinking-indicator">
++                        <div class="thinking-dots">
++                            <div class="thinking-dot"></div>
++                            <div class="thinking-dot"></div>
++                            <div class="thinking-dot"></div>
++                        </div>
++                        <span>Thinking...</span>
++                    </div>
++                </div>
++                <div class="input-section">
++                    <div class="input-container">
++                        <textarea id="chat-input" class="chat-input" rows="1" placeholder="Ask a process question..."></textarea>
++                        <button class="send-button" id="send-button" disabled>Send</button>
++                    </div>
++                </div>
++            </div>
++        </div>
++
++        <!-- Upload Section -->
++        <div class="section-page" id="upload-section">
++            <div class="section-header">
++                <h1 class="section-page-title">Template Validation</h1>
++                <p class="section-page-subtitle">Check supplier submissions for completeness before uploading</p>
++            </div>
++
++            <div class="upload-container">
++                <div class="upload-card" id="upload-card">
++                    <div class="upload-icon">📁</div>
++                    <div class="upload-title">Drop files here or click to upload</div>
++                    <div class="upload-description">Upload supplier templates to automatically check formatting, completeness, and emissions data integrity.</div>
++                    <input type="file" id="file-input" multiple style="display:none;" />
++                    <button class="upload-button" id="upload-button">Select Files</button>
++                    <div class="upload-status" id="upload-status"></div>
++                </div>
++
++                <div class="validation-results" id="validation-results"></div>
++            </div>
++        </div>
++    </div>
++
++    <script>
++        const dashboard = document.getElementById('dashboard');
++        const backButton = document.getElementById('back-button');
++        const sections = {
++            informative: document.getElementById('informative-section'),
++            documents: document.getElementById('documents-section'),
++            conversation: document.getElementById('conversation-section'),
++            upload: document.getElementById('upload-section')
++        };
++
++        function showSection(key) {
++            dashboard.style.display = 'none';
++            Object.values(sections).forEach(s => s.style.display = 'none');
++            sections[key].style.display = 'block';
++            backButton.style.display = 'block';
++        }
++
++        function goHome() {
++            Object.values(sections).forEach(s => s.style.display = 'none');
++            dashboard.style.display = 'block';
++            backButton.style.display = 'none';
++        }
++
++        document.querySelectorAll('.lang-btn').forEach(btn => {
++            btn.addEventListener('click', () => {
++                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
++                btn.classList.add('active');
++            });
++        });
++
++        // Chat handling
++        const chatInput = document.getElementById('chat-input');
++        const sendButton = document.getElementById('send-button');
++        const messagesContainer = document.getElementById('messages-container');
++        const thinkingIndicator = document.getElementById('thinking-indicator');
++
++        chatInput.addEventListener('input', () => {
++            sendButton.disabled = chatInput.value.trim() === '';
++        });
++
++        function addMessage(text, isUser) {
++            const message = document.createElement('div');
++            message.className = 'message ' + (isUser ? 'message-user' : 'message-assistant');
++            const content = document.createElement('div');
++            content.className = 'message-content';
++            content.textContent = text;
++            message.appendChild(content);
++            messagesContainer.appendChild(message);
++            messagesContainer.scrollTop = messagesContainer.scrollHeight;
++        }
++
++        sendButton.addEventListener('click', () => {
++            const text = chatInput.value.trim();
++            if (!text) return;
++            addMessage(text, true);
++            chatInput.value = '';
++            sendButton.disabled = true;
++            thinkingIndicator.style.display = 'flex';
++            setTimeout(() => {
++                thinkingIndicator.style.display = 'none';
++                addMessage('This is a placeholder response providing guidance for: ' + text, false);
++            }, 800);
++        });
++
++        document.querySelectorAll('.process-prompt-card').forEach(card => {
++            card.addEventListener('click', () => {
++                chatInput.value = card.getAttribute('data-prompt');
++                sendButton.disabled = false;
++                chatInput.focus();
++            });
++        });
++
++        // Upload handling
++        const uploadCard = document.getElementById('upload-card');
++        const fileInput = document.getElementById('file-input');
++        const uploadButton = document.getElementById('upload-button');
++        const uploadStatus = document.getElementById('upload-status');
++        const validationResults = document.getElementById('validation-results');
++
++        uploadButton.addEventListener('click', () => fileInput.click());
++        uploadCard.addEventListener('dragover', e => {
++            e.preventDefault();
++            uploadCard.classList.add('dragover');
++        });
++        uploadCard.addEventListener('dragleave', () => uploadCard.classList.remove('dragover'));
++        uploadCard.addEventListener('drop', e => {
++            e.preventDefault();
++            uploadCard.classList.remove('dragover');
++            handleFiles(e.dataTransfer.files);
++        });
++        fileInput.addEventListener('change', e => handleFiles(e.target.files));
++
++        function handleFiles(files) {
++            if (!files.length) return;
++            uploadStatus.className = 'upload-status processing';
++            uploadStatus.textContent = 'Processing ' + files.length + ' file(s)...';
++            uploadStatus.style.display = 'block';
++            setTimeout(() => {
++                uploadStatus.className = 'upload-status success';
++                uploadStatus.textContent = 'Files validated successfully';
++                showValidation(files);
++            }, 1000);
++        }
++
++        function showValidation(files) {
++            validationResults.innerHTML = '';
++            Array.from(files).forEach(file => {
++                const card = document.createElement('div');
++                card.className = 'validation-card';
++                card.innerHTML = `
++                    <div class="validation-header">
++                        <span class="file-name">${file.name}</span>
++                        <span class="validation-status status-valid">Valid</span>
++                    </div>
++                    <div>No issues detected.</div>
++                `;
++                validationResults.appendChild(card);
++            });
++            validationResults.style.display = 'block';
++        }
++    </script>
++</body>
++</html>
